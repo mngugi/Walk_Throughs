@@ -11,6 +11,171 @@ Can you help me figure out the name of that lake?
 
 Simply enter the name of the lake as the flag. It does not need to be in the MetaCTF{} format.
 
+### Solution 
+
+First step is to run lake.png image file on analysis tool such as Exiftool on terminal.
+
+```yaml
+
+ExifTool Version Number         : 12.40
+File Name                       : lake.jpg
+Directory                       : .
+File Size                       : 902 KiB
+File Modification Date/Time     : 2024:08:06 12:33:56+03:00
+File Access Date/Time           : 2024:08:06 12:33:53+03:00
+File Inode Change Date/Time     : 2024:08:06 12:33:58+03:00
+File Permissions                : -rw-r--r--
+File Type                       : JPEG
+File Type Extension             : jpg
+MIME Type                       : image/jpeg
+JFIF Version                    : 1.01
+Exif Byte Order                 : Little-endian (Intel, II)
+Make                            : samsung
+Camera Model Name               : SM-G900V
+Orientation                     : Horizontal (normal)
+X Resolution                    : 72
+Y Resolution                    : 72
+Resolution Unit                 : inches
+Modify Date                     : 2025:06:14 07:10:55
+Y Cb Cr Positioning             : Centered
+Exposure Time                   : 1/868
+F Number                        : 2.4
+Exposure Program                : Program AE
+ISO                             : 50
+Exif Version                    : 0220
+Date/Time Original              : 2021:06:14 07:10:55
+Create Date                     : 2021:06:14 07:10:55
+Offset Time                     : -06:00
+Offset Time Original            : -06:00
+Shutter Speed Value             : 1
+Aperture Value                  : 2.4
+Brightness Value                : 20.88
+Exposure Compensation           : 0
+Max Aperture Value              : 2.4
+Metering Mode                   : Spot
+Flash                           : No Flash
+Focal Length                    : 4.3 mm
+Color Space                     : sRGB
+Exif Image Width                : 2048
+Exif Image Height               : 1536
+Exposure Mode                   : Auto
+White Balance                   : Auto
+Digital Zoom Ratio              : 1
+Focal Length In 35mm Format     : 26 mm
+Scene Capture Type              : Standard
+GPS Latitude Ref                : North
+GPS Longitude Ref               : West
+Image Width                     : 2048
+Image Height                    : 1536
+Encoding Process                : Baseline DCT, Huffman coding
+Bits Per Sample                 : 8
+Color Components                : 3
+Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
+Aperture                        : 2.4
+Image Size                      : 2048x1536
+Megapixels                      : 3.1
+Scale Factor To 35 mm Equivalent: 6.0
+Shutter Speed                   : 1/868
+Date/Time Original              : 2021:06:14 07:10:55-06:00
+Modify Date                     : 2025:06:14 07:10:55-06:00
+GPS Latitude                    : 39 deg 9' 7.99" N
+GPS Longitude                   : 106 deg 24' 20.73" W
+Circle Of Confusion             : 0.005 mm
+Field Of View                   : 69.4 deg
+Focal Length                    : 4.3 mm (35 mm equivalent: 26.0 mm)
+GPS Position                    : 39 deg 9' 7.99" N, 106 deg 24' 20.73" W
+Hyperfocal Distance             : 1.55 m
+Light Value                     : 13.3
+
+
+``` 
+
+> Of importance is the GPS position, `GPS Position: 39 deg 9' 7.99" N, 106 deg 24' 20.73" W`
+> **Conversion to Decimal Degrees**
+> **Latitude:**
+> 39 degrees, 9 minutes, 7.99 seconds North
+> 39 + 9/60 + 7.99/3600 = 39.152219444
+
+> **Longitude:**
+> 106 degrees, 24 minutes, 20.73 seconds West
+> 106 + 24/60 + 20.73/3600
+> 106+0.4+0.005758333
+> 106.405758333
+
+
+> Since the longitude is west, it will be negative:
+> −
+> 106.405758333
+> −106.405758333
+
+> Using a Mapping Service
+> You can enter these decimal degrees coordinates into a mapping service like Google Maps to find the exact location.
+
+> Decimal Degrees:
+> Latitude: 39.152219444
+> Longitude: -106.405758333
+
+> Checking the Location on Google Maps
+> You can simply copy and paste the decimal coordinates into the search bar of Google Maps:
+
+Mngugi add-ons
+
+> Create a Python script to parse and analyze these strings. Here's a script that will:
+
+> Parse the DMS (degrees, minutes, seconds) format.
+> Convert them to decimal degrees.
+> Display the results.
+
+**Code:**
+
+```python
+
+import re
+
+def dms_to_decimal(dms_str):
+    # Regular expression to parse the DMS format
+    pattern = r'(\d+) deg (\d+)' + "'" + r' (\d+\.\d+)" ([NSEW])'
+    match = re.match(pattern, dms_str)
+    
+    if not match:
+        raise ValueError(f"Invalid DMS string: {dms_str}")
+    
+    degrees = int(match.group(1))
+    minutes = int(match.group(2))
+    seconds = float(match.group(3))
+    direction = match.group(4)
+    
+    # Convert DMS to decimal degrees
+    decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)
+    
+    # Adjust the sign based on the direction
+    if direction in ['S', 'W']:
+        decimal_degrees = -decimal_degrees
+    
+    return decimal_degrees
+
+# Define the strings
+latitude_str = "39 deg 9' 7.99\" N"
+longitude_str = "106 deg 24' 20.73\" W"
+
+# Convert to decimal degrees
+latitude_decimal = dms_to_decimal(latitude_str)
+longitude_decimal = dms_to_decimal(longitude_str)
+
+# Print the results
+print(f"Latitude (decimal degrees): {latitude_decimal}")
+print(f"Longitude (decimal degrees): {longitude_decimal}")
+
+# Display the results using Streamlit
+import streamlit as st
+
+st.write("### DMS to Decimal Degrees Conversion")
+st.write(f"**Latitude:** {latitude_str} -> **{latitude_decimal}**")
+st.write(f"**Longitude:** {longitude_str} -> **{longitude_decimal}**")
+
+
+```
+
 ---
 
 ### Problem 26 Dimensions 

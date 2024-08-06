@@ -350,3 +350,16 @@ print(f"GLIBC Versions: {', '.join(glibc_versions) if glibc_versions else 'Not f
 
 ```
 > This script will search the provided data for the CTF flag, GCC version, and GLIBC versions and print them. You can expand this script to further analyze or process the data as needed.
+
+---
+
+### [Xylophone Network Graphics](https://compete.metactf.com/256/problems#problem7)
+
+### Problem
+
+I generated [some art](https://metaproblems.com/a200e0724f29c00c9700dcbc4c38f363/encrypted.xpng) as a PNG image, and then encrypted the file using an 8-character-long key that was repeated.
+
+I can't remember what it was! Can you help me decrypt the image and retrieve the flag?
+
+### Solution
+

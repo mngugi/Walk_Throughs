@@ -2,7 +2,7 @@
 
 ### March 2024 Flash CTF
 
-### Problem 
+### Problem Camping Adventures
 
 My friend went camping near some beautiful lake the other day and sent me a photo, but they refuse to tell me where it was!
 ![](https://metaproblems.com/f95246689bf80875673db4b3570be2ba/lake.jpg)
@@ -10,6 +10,14 @@ My friend went camping near some beautiful lake the other day and sent me a phot
 Can you help me figure out the name of that lake?
 
 Simply enter the name of the lake as the flag. It does not need to be in the MetaCTF{} format.
+
+---
+
+### Problem 26 Dimensions 
+
+> The supercomputing center just put out a program that checks physics theories for correctness. Can you figure out the answer to the universe and everything?
+> Perhaps it's not as smart as they claim it is, and it has the answer hardcoded?
+
 
 ### Solution 
 **by MetaCTF**

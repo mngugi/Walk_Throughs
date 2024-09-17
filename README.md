@@ -366,6 +366,8 @@ I can't remember what it was! Can you help me decrypt the image and retrieve the
 
 ---
 
+### Feb 2024 Flash CTF Writeups
+
 ### Problem Statement
 
 Take a look at ConnectWind's internal employee portal
@@ -414,3 +416,67 @@ employee_portal.php page.
 The vulnerability here is that the employee_portal.php page doesn't actually validate
 if you're logged in or not. All you have to do is go to that page and look at the
 flag:` https://metaproblems.com/71c5b42eb77639d5224be5589123de30/employee_portal.php`
+
+### Mngugis' add-ons
+The JavaScript code provided is vulnerable to several potential security risks. Here are the primary vulnerabilities and suggestions for securing the code:
+
+**1. Potential Cross-Site Scripting (XSS)**
+
+The `set_alert` function directly inserts user-provided data (txt) into the DOM without proper sanitization or escaping. If an attacker is able to inject malicious scripts, they can execute arbitrary JavaScript in the user's browser.
+
+Mitigation: Use a secure method like textContent instead of `innerHTML or jQuery.html()`, or sanitize the input properly to prevent script injection.
+
+**Example fix:**
+
+```js
+
+$("#result").text(txt); // Avoids using HTML to prevent XSS
+
+```
+2. Sensitive Data Exposure
+Sending the username and password in a `GET` request is insecure, as the credentials will be exposed in the URL and potentially logged in browser history, server logs, or network traffic.
+
+**Mitigation:** Use a POST request instead, which hides sensitive data from the URL.
+
+**Example fix:**
+
+```js
+
+$.post("login.php", {
+  "action": "login",
+  "username": $("#username").val(),
+  "password": $("#password").val()
+}, function (r) {
+  // Handle response
+}, "json");
+
+```
+
+**3. Insecure Redirection**
+After a successful login, the script redirects the user to `./employee_portal.php.` If the site is vulnerable to URL manipulation (e.g., open redirects), an attacker could trick users into being redirected to a malicious website.
+
+**Mitigation:** Validate the redirection URLs on the server side. Ensure that only valid URLs are used for redirection.
+
+**4. Client-Side Authentication Logic**
+The login success logic is performed on the client side, which can be tampered with by an attacker. An attacker can modify the response or bypass the login check entirely by manipulating the JavaScript.
+
+**Mitigation:** Ensure that authentication and authorization checks happen entirely on the server side, never trust client-side code for security-critical logic. The server should validate the credentials and return the appropriate response securely.
+
+**5. No CSRF Protection**
+The code does not implement any Cross-Site Request Forgery `(CSRF)` protection. An attacker could exploit this by tricking the user into sending a request to `login.php` without their knowledge.
+
+**Mitigation:** Implement `CSRF` tokens to ensure that each request is coming from an authorized source.
+
+**Suggested Improvements:**
+Escape user inputs to prevent `XSS`.
+Use `POST` for sending credentials to avoid URL exposure.
+Perform login validation and redirection on the server side, and ensure the redirect URL is validated.
+Add `CSRF` protection to prevent unauthorized requests.
+
+With these changes, the login functionality will be more secure against common web vulnerabilities.
+
+
+
+
+
+

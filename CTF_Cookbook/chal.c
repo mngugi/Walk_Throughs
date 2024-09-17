@@ -3,11 +3,11 @@
 
 int main() {
     char buffer1[16];
-    char buffer[16] = "xxxxxxxxxxxxxxx";
+    char buffer2[16] = "xxxxxxxxxxxxxxx";
 
     gets(buffer1);
 
-    if (strcmp(buffer2, impossible)== 0) {
+    if (strcmp(buffer2, "impossible?")== 0) {
 
         puts("flag{win}");
 

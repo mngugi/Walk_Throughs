@@ -363,3 +363,54 @@ I can't remember what it was! Can you help me decrypt the image and retrieve the
 
 ### Solution
 
+
+---
+
+### Problem Statement
+
+Take a look at ConnectWind's internal employee portal
+`[https://metaproblems.com/71c5b42eb77639d5224be5589123de30/].` In addition to company policies & HR information, I heard it also stores flags.
+
+Can you access the protected employee portal without knowing the password and steal
+the flag?
+
+### Solution
+This is an IDOR (Insecure Direct Object References) or a CWE-306 (Missing Authentication for Critical Function) challenge.
+
+View source of the website and take a look at the login function that is responsible for validating the username and password:
+
+```js
+
+function login() {
+$("#result").fadeOut("fast");
+// Send request with credentials
+$.getJSON("login.php",
+{
+    "action":"login",
+    "username": $("#username").val(),
+    "password": $("#password").val()
+
+}, function (r) {
+ if (r.login_successful) {
+   // Redirect if login successful
+      set_alert('Login successful! Redirecting... <i class="fa-solid fa-spinner faspin"></i>', "success");
+      setTimeout(function () {
+window.location.href = "./employee_portal.php";
+  }, 1500);
+} else {
+// Username or password incorrect
+set_alert("Login failed! Please try again.", "danger");
+      }
+    }
+  );
+}
+
+
+
+```
+
+If the entered username and password are correct, the function redirects you to the
+employee_portal.php page.
+The vulnerability here is that the employee_portal.php page doesn't actually validate
+if you're logged in or not. All you have to do is go to that page and look at the
+flag:` https://metaproblems.com/71c5b42eb77639d5224be5589123de30/employee_portal.php`

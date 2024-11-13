@@ -1,4 +1,4 @@
-# Welcome to the Walk_Throughs wiki!
+# Welcome to the Walk_Throughs!
 
 ### March 2024 Flash CTF
 

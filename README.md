@@ -1,4 +1,4 @@
-# Welcome to the Walk_Throughs!
+# Welcome to the Walk_Throughs wiki!
 
 ### March 2024 Flash CTF
 
@@ -474,6 +474,61 @@ Perform login validation and redirection on the server side, and ensure the redi
 Add `CSRF` protection to prevent unauthorized requests.
 
 With these changes, the login functionality will be more secure against common web vulnerabilities.
+
+---
+
+### Scenario: The Hacked Healthcare System
+
+A small, regional healthcare provider has experienced a significant data breach. Patient records,
+including sensitive health information, have been compromised and potentially leaked online.
+The breach has caused widespread panic among patients and has damaged the hospital's
+reputation.
+
+### Tasks:
+**1.  Identify and Analyze Attack Vectors:****
+*** Question: What are the most likely attack vectors that could have been used to**
+  **breach the healthcare provider's systems?**
+* Task: Analyze potential attack vectors such as phishing emails, weak passwords,
+  unpatched vulnerabilities, or social engineering tactics.
+
+**3. Determine the Type of Malware:**
+
+**Question: What kind of malware might have been used to infiltrate the system and**
+**exfiltrate data?**
+**Task: **
+Consider malware types like ransomware, spyware, or data-stealing Trojans.
+Analyze the potential impact of each type on the healthcare provider's systems and
+data.
+**3. Evaluate Cybersecurity Practices:**
+**Question: What cybersecurity practices might have been lacking or inadequate,**
+**leading to the breach?**
+* Task: Evaluate the healthcare provider's policies and procedures related to:
+* Password strength and complexity
+* Employee training and awareness
+* Network security measures (firewalls, intrusion detection systems)
+* Data backup and recovery plans
+* Incident response procedures
+4. Develop Recommendations:
+○ Question: What specific recommendations can be made to improve the healthcare
+provider's cybersecurity posture and prevent future breaches?
+**Task: Develop a comprehensive cybersecurity plan that includes:**
+* Strong password policies
+* Regular security awareness training for employees
+* Network segmentation and access controls
+* Regular system patching and vulnerability scanning
+* Data encryption and backup
+* Incident response plan
+* Third-party risk management
+### Ethical Considerations:
+* Patient Privacy: Discuss the ethical implications of a data breach, including the potential
+harm to patients and the healthcare provider's reputation.
+* Data Protection Regulations: Explore the legal and regulatory requirements for
+protecting patient data, such as HIPAA in the US or GDPR in the EU.
+* Transparency and Communication: Consider the importance of transparent
+communication with patients and other stakeholders about the breach and the steps being
+taken to address it.
+
+### Solution
 
 
 

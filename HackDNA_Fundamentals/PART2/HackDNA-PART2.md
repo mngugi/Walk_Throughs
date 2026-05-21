@@ -273,7 +273,9 @@ Retrieve the flag using curl:
 
 ```bash
 curl http://3.252.233.93/2kf84qoqi6sviu7poeu54p9b/flag.txt
+
 ```
+> Get the flag :  5bdd59d4-2ab4-4a30-af10-534e35e7065d
 
 ---
 

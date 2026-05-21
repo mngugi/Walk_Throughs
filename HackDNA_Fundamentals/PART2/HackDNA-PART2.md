@@ -8,7 +8,7 @@ FTP servers with anonymous access often expose internal files, backups, or flags
 
 ---
 
-# Objective
+## Objective
 
 Connect to the FTP service using anonymous credentials and retrieve the hidden flag file.
 

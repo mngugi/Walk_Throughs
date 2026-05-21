@@ -1303,3 +1303,5 @@ Frontend code must never contain operational secrets or authorization logic.
 Source-code inspection is one of the first reconnaissance techniques used during penetration testing. Exposed secrets significantly increase organizational risk and often enable rapid exploitation.
 
 Secure development practices, automated scanning, and strict secret management policies are essential to prevent information disclosure vulnerabilities.
+
+===

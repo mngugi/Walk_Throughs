@@ -1662,8 +1662,6 @@ Authentication vulnerabilities remain one of the most dangerous weaknesses in mo
 
 Secure authentication requires strong validation, secure session handling, layered protections, and continuous monitoring.
 
-===
-
 # HackDNA – Hack the Login
 
 ## Challenge Overview
@@ -2020,8 +2018,6 @@ Authentication vulnerabilities remain one of the most dangerous weaknesses in mo
 
 Secure authentication requires strong validation, secure session handling, layered protections, and continuous monitoring.
 
-
-===
 
 # HackDNA – Secrets in Source 2
 
@@ -2417,6 +2413,5 @@ This challenge demonstrates the fundamental weakness of relying on client-side s
 
 Secure applications must keep sensitive logic and secrets server-side while treating all client-side code as publicly accessible.
 
-
-===
+---
 

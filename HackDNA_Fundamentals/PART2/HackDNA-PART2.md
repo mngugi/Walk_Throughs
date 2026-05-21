@@ -316,6 +316,7 @@ This vulnerability occurs because:
 X-Forwarded-For: 127.0.0.1
 X-Forwarded-For: 10.0.0.1
 X-Forwarded-For: 192.168.1.1
+
 ```
 
 ---

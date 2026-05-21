@@ -1664,5 +1664,757 @@ Secure authentication requires strong validation, secure session handling, layer
 
 ===
 
+# HackDNA – Hack the Login
+
+## Challenge Overview
+
+This challenge focuses on authentication weaknesses within web applications. Login systems are one of the most targeted attack surfaces because they protect sensitive accounts and administrative functionality.
+
+Improper authentication mechanisms can allow attackers to bypass access controls, brute-force credentials, enumerate users, or gain unauthorized access.
+
+---
+
+# Objective
+
+Identify weaknesses in the application's authentication mechanism and gain unauthorized access.
+
+---
+
+# Understanding Authentication Attacks
+
+Common authentication weaknesses include:
+
+* Weak passwords
+* Default credentials
+* SQL Injection
+* Username enumeration
+* Missing rate limiting
+* Insecure session handling
+* Client-side authentication logic
+* Poor password storage
+
+Attackers typically target login systems during initial access attempts.
+
+---
+
+# Reconnaissance
+
+Begin by analyzing the login form.
+
+Inspect:
+
+* Request methods
+* Parameters
+* Cookies
+* Error messages
+* Hidden fields
+* Authentication responses
+
+Use browser developer tools:
+
+```bash
+F12 → Network
+```
+
+Observe login requests.
+
+Example:
+
+```http
+POST /login HTTP/1.1
+
+username=admin&password=admin
+```
+
+---
+
+# Testing Default Credentials
+
+Applications sometimes ship with weak or default credentials.
+
+Examples:
+
+```text
+admin:admin
+admin:password
+guest:guest
+test:test
+```
+
+Failure to change default accounts is a common security issue.
+
+---
+
+# Username Enumeration
+
+Applications may reveal whether usernames exist.
+
+Example responses:
+
+```text
+Invalid password
+```
+
+versus:
+
+```text
+User does not exist
+```
+
+This allows attackers to identify valid accounts before attempting password attacks.
+
+---
+
+# SQL Injection Authentication Bypass
+
+Improper input validation can allow SQL Injection.
+
+Example vulnerable query:
+
+```sql
+SELECT * FROM users
+WHERE username='$username'
+AND password='$password';
+```
+
+Malicious input:
+
+```sql
+' OR '1'='1
+```
+
+Example payload:
+
+```text
+username: admin
+password: ' OR '1'='1
+```
+
+Resulting query:
+
+```sql
+SELECT * FROM users
+WHERE username='admin'
+AND password='' OR '1'='1';
+```
+
+The condition evaluates to true and may bypass authentication.
+
+---
+
+# Brute Force Attacks
+
+If no rate limiting exists, attackers may automate password guessing.
+
+Example using Hydra:
+
+```bash
+hydra -l admin -P rockyou.txt TARGET_IP http-post-form "/login:username=^USER^&password=^PASS^:Invalid"
+```
+
+Brute-force attacks become practical when:
+
+* Passwords are weak
+* MFA is absent
+* Lockout protections are missing
+
+---
+
+# Client-Side Authentication Weaknesses
+
+Some applications incorrectly enforce authentication logic inside JavaScript.
+
+Example:
+
+```javascript
+if(password == "admin123"){
+    loginSuccess();
+}
+```
+
+Attackers inspecting source code can recover credentials directly.
+
+---
+
+# Session Analysis
+
+Inspect cookies after authentication.
+
+Example:
+
+```http
+Set-Cookie: session=abc123
+```
+
+Look for:
+
+* Predictable session IDs
+* Missing HttpOnly flag
+* Missing Secure flag
+* Session fixation issues
+
+---
+
+# Exploitation Workflow
+
+Typical attack chain:
+
+1. Enumerate usernames
+2. Test weak credentials
+3. Attempt SQL Injection
+4. Analyze source code
+5. Brute-force passwords
+6. Manipulate sessions
+7. Gain unauthorized access
+
+---
+
+# Root Cause
+
+Authentication vulnerabilities commonly arise from:
+
+* Weak security design
+* Poor credential management
+* Insecure coding practices
+* Missing input sanitization
+* Lack of defense-in-depth
+* Improper session management
+
+---
+
+# Security Impact
+
+Authentication flaws may lead to:
+
+* Account takeover
+* Administrative access
+* Data breaches
+* Privilege escalation
+* Lateral movement
+* Full system compromise
+
+Authentication weaknesses are among the highest-risk web vulnerabilities.
+
+---
+
+# Detection Techniques
+
+## Manual Testing
+
+* Analyze login responses
+* Test weak credentials
+* Inspect cookies
+* Review source code
+* Observe authentication flow
+
+## Automated Testing
+
+Using Burp Suite:
+
+```text
+Intruder → Payload Positions → Password List
+```
+
+Using Hydra:
+
+```bash
+hydra -L users.txt -P passwords.txt TARGET_IP
+```
+
+Using SQLMap:
+
+```bash
+sqlmap -u "http://TARGET/login" --forms
+```
+
+---
+
+# Defensive Measures
+
+## Strong Password Policies
+
+Require:
+
+* Long passwords
+* Password complexity
+* Breach-password detection
+* Secure password rotation
+
+## Multi-Factor Authentication
+
+Add additional verification layers.
+
+## Rate Limiting
+
+Restrict repeated login attempts.
+
+## Secure Session Management
+
+Use secure cookie settings:
+
+```http
+HttpOnly
+Secure
+SameSite=Strict
+```
+
+## Input Validation
+
+Sanitize user input to prevent injection attacks.
+
+## Account Lockout Policies
+
+Temporarily block repeated failed attempts.
+
+## Security Monitoring
+
+Monitor for:
+
+* Brute-force attacks
+* Credential stuffing
+* Suspicious login behavior
+* Geographic anomalies
+
+---
+
+# Real-World Relevance
+
+Authentication weaknesses are frequently exploited in:
+
+* Banking systems
+* SaaS applications
+* Corporate portals
+* Administrative dashboards
+* APIs
+
+Common attack techniques include:
+
+* Password spraying
+* Credential stuffing
+* MFA fatigue attacks
+* Session hijacking
+
+---
+
+# Key Takeaway
+
+Authentication systems should never rely on weak validation or insecure trust assumptions.
+
+Layered defenses are essential for protecting accounts and sensitive functionality.
+
+---
+
+# Vulnerability Classification
+
+* CWE-287: Improper Authentication
+* CWE-307: Improper Restriction of Excessive Authentication Attempts
+* CWE-89: SQL Injection
+* OWASP A01:2021 – Broken Access Control
+* OWASP A07:2021 – Identification and Authentication Failures
+
+---
+
+# Conclusion
+
+Authentication vulnerabilities remain one of the most dangerous weaknesses in modern applications. Poor login security can rapidly lead to unauthorized access and complete compromise.
+
+Secure authentication requires strong validation, secure session handling, layered protections, and continuous monitoring.
+
+
+===
+
+# HackDNA – Secrets in Source 2
+
+## Challenge Scenario
+
+SecureVault Technologies claims their website is protected with advanced client-side security controls. The application attempts to prevent inspection by:
+
+* Disabling right-click
+* Blocking developer tools
+* Detecting browser inspection activity
+* Restricting keyboard shortcuts
+
+Despite these protections, client-side defenses alone cannot secure sensitive information exposed to the browser.
+
+This challenge demonstrates why frontend security controls are not reliable protections against determined attackers.
+
+---
+
+# Objective
+
+Bypass the client-side restrictions and uncover hidden secrets exposed within the application's source code.
+
+---
+
+# Understanding Client-Side Security Limitations
+
+Anything delivered to the browser is ultimately accessible to the user.
+
+Client-side protections such as:
+
+* Disabled right-click
+* Blocked keyboard shortcuts
+* Anti-debugging scripts
+* DevTools detection
+
+only create superficial obstacles.
+
+Attackers can still inspect:
+
+* HTML source
+* JavaScript files
+* Network requests
+* Browser storage
+* Client-side variables
+
+---
+
+# Initial Reconnaissance
+
+Open the target application and observe its behavior.
+
+Possible restrictions may include:
+
+```javascript
+window.oncontextmenu = function() {
+    return false;
+}
+```
+
+or:
+
+```javascript
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) {
+        return false;
+    }
+}
+```
+
+These scripts attempt to block:
+
+* Right-click
+* F12
+* CTRL + SHIFT + I
+* CTRL + U
+
+---
+
+# Bypassing Client-Side Restrictions
+
+Client-side restrictions can often be bypassed easily.
+
+## Method 1 – Browser Menu
+
+Access developer tools using the browser menu:
+
+```text
+Browser Menu → More Tools → Developer Tools
+```
+
+## Method 2 – Disable JavaScript
+
+Disable JavaScript temporarily.
+
+Example in Chromium-based browsers:
+
+```text
+Settings → Privacy and Security → Site Settings → JavaScript
+```
+
+Once JavaScript is disabled, anti-inspection protections stop functioning.
+
+## Method 3 – View Source Directly
+
+Even if shortcuts are blocked, manually access:
+
+```text
+view-source:http://TARGET
+```
+
+inside the browser address bar.
+
+## Method 4 – Use External Tools
+
+Retrieve source code directly using:
+
+```bash
+curl http://TARGET
+```
+
+or:
+
+```bash
+wget http://TARGET
+```
+
+Client-side restrictions do not affect external HTTP requests.
+
+---
+
+# Source Code Analysis
+
+After bypassing restrictions, inspect the source carefully.
+
+Look for:
+
+* Hidden comments
+* Hardcoded credentials
+* API keys
+* Tokens
+* Hidden endpoints
+* Debug information
+
+Example:
+
+```html
+<!-- TODO: remove admin password before production -->
+```
+
+or:
+
+```javascript
+const adminKey = "SVT-admin-2026";
+```
+
+---
+
+# JavaScript Enumeration
+
+Inspect linked JavaScript files.
+
+Example:
+
+```html
+<script src="app.js"></script>
+```
+
+Open browser DevTools:
+
+```bash
+F12 → Sources
+```
+
+Search for sensitive terms:
+
+```text
+password
+secret
+admin
+apikey
+token
+flag
+```
+
+---
+
+# Hidden Flags and Secrets
+
+Flags may be intentionally hidden inside:
+
+* JavaScript variables
+* Console messages
+* HTML comments
+* Local storage
+* Hidden DOM elements
+
+Example:
+
+```javascript
+console.log("flag{client_side_security_fails}")
+```
+
+or:
+
+```html
+<!-- flag{inspect_everything} -->
+```
+
+---
+
+# Browser Storage Inspection
+
+Inspect local storage and session storage.
+
+Open:
+
+```bash
+F12 → Application
+```
+
+Check:
+
+* Local Storage
+* Session Storage
+* Cookies
+
+Example:
+
+```text
+flag=HDNA{source_disclosure}
+```
+
+---
+
+# Network Traffic Analysis
+
+Inspect HTTP requests and responses.
+
+```bash
+F12 → Network
+```
+
+Look for:
+
+* Hidden API responses
+* Debug endpoints
+* Sensitive JSON data
+* Developer headers
+
+Example response:
+
+```json
+{
+  "debug":"enabled",
+  "admin":"true"
+}
+```
+
+---
+
+# Root Cause
+
+The vulnerability exists because sensitive information was exposed client-side while relying on weak browser restrictions as security controls.
+
+Developers incorrectly assumed that:
+
+* Blocking right-click prevents inspection
+* Disabling shortcuts prevents analysis
+* DevTools detection stops attackers
+
+In reality, frontend protections cannot secure exposed data.
+
+---
+
+# Security Impact
+
+Source-code exposure vulnerabilities may lead to:
+
+* Credential disclosure
+* Administrative access
+* API abuse
+* Internal infrastructure exposure
+* Authentication bypass
+* Privilege escalation
+
+Attackers routinely analyze frontend assets during reconnaissance.
+
+---
+
+# Detection Techniques
+
+## Manual Analysis
+
+* View source code
+* Inspect JavaScript files
+* Analyze browser storage
+* Review network requests
+* Check hidden elements
+
+## Automated Discovery
+
+Using grep:
+
+```bash
+grep -Ri "password\|secret\|token\|apikey" .
+```
+
+Using curl:
+
+```bash
+curl http://TARGET
+```
+
+Using browser DevTools:
+
+```bash
+F12 → Sources
+```
+
+---
+
+# Defensive Measures
+
+## Never Trust Client-Side Controls
+
+Client-side restrictions should never be considered security mechanisms.
+
+## Keep Secrets Server-Side
+
+Sensitive information must never be embedded inside frontend code.
+
+## Remove Debug Information
+
+Eliminate:
+
+* Comments
+* Debug logs
+* Test credentials
+* Development endpoints
+
+before deployment.
+
+## Use Proper Authorization
+
+Security decisions must always be enforced server-side.
+
+## Conduct Secure Code Reviews
+
+Implement:
+
+* Secret scanning
+* Static analysis
+* CI/CD security checks
+* Penetration testing
+
+---
+
+# Real-World Relevance
+
+Many real-world applications attempt to rely on:
+
+* Obfuscation
+* Disabled right-click
+* Anti-debugging JavaScript
+* Minified code
+
+These measures may inconvenience casual users but do not stop attackers.
+
+Security through obscurity is not effective protection.
+
+---
+
+# Key Takeaway
+
+If the browser receives the data, attackers can access it.
+
+Client-side protections cannot secure sensitive information exposed to users.
+
+---
+
+# Vulnerability Classification
+
+* CWE-200: Exposure of Sensitive Information to an Unauthorized Actor
+* CWE-602: Client-Side Enforcement of Server-Side Security
+* CWE-215: Information Exposure Through Debug Information
+* OWASP A05:2021 – Security Misconfiguration
+
+---
+
+# Conclusion
+
+This challenge demonstrates the fundamental weakness of relying on client-side security controls. Browser restrictions may slow inexperienced users, but they do not protect sensitive information from attackers.
+
+Secure applications must keep sensitive logic and secrets server-side while treating all client-side code as publicly accessible.
 
 

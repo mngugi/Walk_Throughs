@@ -263,9 +263,9 @@ Secrets exposed in source code represent a high-risk information disclosure vuln
 
 Secure development practices, automated secret scanning, and proper server-side secret management are essential to prevent this class of vulnerability.
 
+---
 
-
-# HackDNA – Nmap Lab 102
+## HackDNA – Nmap Lab 102
 
 ## Challenge Overview
 
@@ -994,7 +994,7 @@ Cookie manipulation attacks demonstrate the dangers of trusting client-side auth
 
 Proper server-side authorization, signed session management, and secure token validation are essential to prevent privilege escalation vulnerabilities.
 
-===
+---
 
 # HackDNA – Secrets in Source
 
@@ -1304,7 +1304,7 @@ Source-code inspection is one of the first reconnaissance techniques used during
 
 Secure development practices, automated scanning, and strict secret management policies are essential to prevent information disclosure vulnerabilities.
 
-===
+---
 
 # HackDNA – Hack the Login
 

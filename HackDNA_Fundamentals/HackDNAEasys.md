@@ -2418,3 +2418,5 @@ This challenge demonstrates the fundamental weakness of relying on client-side s
 Secure applications must keep sensitive logic and secrets server-side while treating all client-side code as publicly accessible.
 
 
+===
+

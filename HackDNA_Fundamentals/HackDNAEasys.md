@@ -263,7 +263,7 @@ Secrets exposed in source code represent a high-risk information disclosure vuln
 
 Secure development practices, automated secret scanning, and proper server-side secret management are essential to prevent this class of vulnerability.
 
-===
+
 
 # HackDNA – Nmap Lab 102
 

@@ -125,7 +125,9 @@ This vulnerability occurs due to:
 ## Port Scanning
 
 ```bash
+
 nmap -p 21 34.245.169.217
+
 ```
 
 ## FTP Banner Checking

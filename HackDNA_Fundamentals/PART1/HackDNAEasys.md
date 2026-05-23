@@ -49,7 +49,7 @@ inside the source.
 
 # Initial Findings
 
-While reviewing the HTML source, suspicious comments and hidden values may appear.
++ While reviewing the HTML source, suspicious comments and hidden values may appear.
 
 Example indicators:
 
@@ -65,13 +65,13 @@ Example indicators:
 const api_key = "dev-test-key-123";
 ```
 
-Client-side JavaScript files are also critical.
++ Client-side JavaScript files are also critical.
 
 ---
 
 # JavaScript Enumeration
 
-Inspect loaded JavaScript files using browser developer tools.
++ Inspect loaded JavaScript files using browser developer tools.
 
 ```bash
 F12 → Sources

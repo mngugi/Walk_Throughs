@@ -635,9 +635,9 @@ Always obtain proper authorization before performing security testing.
 
 # Key Takeaway
 
-Network reconnaissance is the foundation of penetration testing. Understanding exposed services allows attackers and defenders alike to assess risk and identify security weaknesses.
+>> Network reconnaissance is the foundation of penetration testing. Understanding exposed services allows attackers and defenders alike to assess risk and identify security weaknesses.
 
-Nmap remains one of the most essential tools in cybersecurity operations.
+>> Nmap remains one of the most essential tools in cybersecurity operations.
 
 ---
 

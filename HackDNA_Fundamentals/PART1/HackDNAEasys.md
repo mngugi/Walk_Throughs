@@ -12,15 +12,15 @@
 
 # Objective
 
-Identify hidden credentials, tokens, or sensitive information exposed within the web application's source code.
++ Identify hidden credentials, tokens, or sensitive information exposed within the web application's source code.
 
 ---
 
 # Reconnaissance
 
-The first step involves inspecting the application source.
++ The first step involves inspecting the application source.
 
-Open the target page and view the source code:
++ Open the target page and view the source code:
 
 ```bash
 CTRL + U

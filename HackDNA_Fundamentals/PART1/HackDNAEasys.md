@@ -651,9 +651,9 @@ Always obtain proper authorization before performing security testing.
 
 # Conclusion
 
-Nmap enables deep visibility into network infrastructure and exposed services. Effective enumeration can uncover weak configurations, outdated software, and hidden attack surfaces.
+> Nmap enables deep visibility into network infrastructure and exposed services. Effective enumeration can uncover weak configurations, outdated software, and hidden attack surfaces.
 
-Defenders should continuously audit exposed services and minimize unnecessary network exposure to reduce organizational risk.
+> Defenders should continuously audit exposed services and minimize unnecessary network exposure to reduce organizational risk.
 
 ---
 
@@ -661,9 +661,9 @@ Defenders should continuously audit exposed services and minimize unnecessary ne
 
 ## Challenge Overview
 
-This challenge focuses on insecure client-side trust and cookie manipulation. Web applications commonly use cookies to maintain session state, authentication information, and user preferences.
+> This challenge focuses on insecure client-side trust and cookie manipulation. Web applications commonly use cookies to maintain session state, authentication information, and user preferences.
 
-When sensitive authorization logic is stored directly inside client-side cookies without proper integrity protection, attackers can manipulate values to escalate privileges or bypass authentication controls.
+> When sensitive authorization logic is stored directly inside client-side cookies without proper integrity protection, attackers can manipulate values to escalate privileges or bypass authentication controls.
 
 ---
 
@@ -990,9 +990,9 @@ Any authorization mechanism relying solely on browser-stored values is fundament
 
 # Conclusion
 
-Cookie manipulation attacks demonstrate the dangers of trusting client-side authorization data. Attackers routinely inspect and tamper with cookies during web application assessments.
+> Cookie manipulation attacks demonstrate the dangers of trusting client-side authorization data. Attackers routinely inspect and tamper with cookies during web application assessments.
 
-Proper server-side authorization, signed session management, and secure token validation are essential to prevent privilege escalation vulnerabilities.
+> Proper server-side authorization, signed session management, and secure token validation are essential to prevent privilege escalation vulnerabilities.
 
 ---
 
@@ -1000,9 +1000,9 @@ Proper server-side authorization, signed session management, and secure token va
 
 ## Challenge Overview
 
-This challenge demonstrates how sensitive information can accidentally be exposed within the source code of a web application. Attackers frequently inspect frontend assets during reconnaissance to discover hidden credentials, internal comments, API keys, and development artifacts.
++ This challenge demonstrates how sensitive information can accidentally be exposed within the source code of a web application. Attackers frequently inspect frontend assets during reconnaissance to discover hidden credentials, internal comments, API keys, and development artifacts.
 
-Source-code disclosure vulnerabilities are among the most common security weaknesses found in modern web applications.
++ Source-code disclosure vulnerabilities are among the most common security weaknesses found in modern web applications.
 
 ---
 

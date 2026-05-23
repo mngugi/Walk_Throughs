@@ -51,7 +51,7 @@ inside the source.
 
 + While reviewing the HTML source, suspicious comments and hidden values may appear.
 
-Example indicators:
+**Example indicators:**
 
 ```html
 <!-- TODO: remove test credentials before production -->
@@ -101,7 +101,7 @@ backup
 
 # Exploitation
 
-A sensitive value exposed in the source can often be reused for:
++ A sensitive value exposed in the source can often be reused for:
 
 * Authentication bypass
 * Admin access
@@ -109,7 +109,7 @@ A sensitive value exposed in the source can often be reused for:
 * API interaction
 * Privilege escalation
 
-Example:
+**Example:**
 
 ```javascript
 const adminPassword = "SuperSecret123";

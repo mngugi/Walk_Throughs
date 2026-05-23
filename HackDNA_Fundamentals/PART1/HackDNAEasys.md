@@ -121,9 +121,9 @@ Using the discovered credential on the login page grants elevated access.
 
 # Root Cause
 
-The vulnerability exists because sensitive information was embedded directly into client-side code.
+> The vulnerability exists because sensitive information was embedded directly into client-side code.
 
-Anything sent to the browser must be considered public.
+> Anything sent to the browser must be considered public.
 
 Common developer mistakes include:
 
@@ -242,9 +242,9 @@ Common exposed secrets include:
 
 # Key Takeaway
 
-If the browser can see it, an attacker can see it.
++ If the browser can see it, an attacker can see it.
 
-Client-side code should never contain sensitive operational secrets.
++ Client-side code should never contain sensitive operational secrets.
 
 ---
 
@@ -259,7 +259,7 @@ Client-side code should never contain sensitive operational secrets.
 
 # Conclusion
 
-Secrets exposed in source code represent a high-risk information disclosure vulnerability. Attackers routinely inspect frontend assets during reconnaissance, making exposed credentials one of the easiest attack vectors to exploit.
+> Secrets exposed in source code represent a high-risk information disclosure vulnerability. Attackers routinely inspect frontend assets during reconnaissance, making exposed credentials one of the easiest attack vectors to exploit.
 
 Secure development practices, automated secret scanning, and proper server-side secret management are essential to prevent this class of vulnerability.
 
@@ -269,7 +269,7 @@ Secure development practices, automated secret scanning, and proper server-side 
 
 ## Challenge Overview
 
-This lab introduces practical network reconnaissance using Nmap. The objective is to identify open ports, exposed services, and potentially vulnerable network-facing applications running on the target system.
+> This lab introduces practical network reconnaissance using Nmap. The objective is to identify open ports, exposed services, and potentially vulnerable network-facing applications running on the target system.
 
 Nmap is one of the most widely used reconnaissance and enumeration tools in cybersecurity and penetration testing.
 

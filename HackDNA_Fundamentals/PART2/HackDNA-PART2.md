@@ -486,8 +486,8 @@ ctf:x:1001:1001::/home/ctf:/bin/bash
 The important fields are:
 
 - Username: `ctf`
-- Home directory: `/home/ctf`
-- Shell: `/bin/bash`
+- Home directory: `/home/ctf.`
+- Shell: `/bin/bash.`
 
 ---
 
@@ -670,7 +670,7 @@ cat /tmp/flag-root.txt
 
 ---
 
-## Method 3 — Exploit `sudo`
+## Method 3 — Exploit `sudo.`
 
 ### Vim
 

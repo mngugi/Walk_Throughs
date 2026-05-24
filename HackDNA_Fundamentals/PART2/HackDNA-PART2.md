@@ -792,10 +792,10 @@ Output:
 
 Notably:
 
-- No SUID `find`
+- No SUID `find.`
 - No SUID shell binaries
-- Presence of `crontab`
-- Presence of active cron daemon
+- Presence of `crontab.`
+- Presence of an active cron daemon
 
 ---
 
@@ -827,7 +827,7 @@ crond -b -L /var/log/cron.log
 This confirmed:
 
 - cron daemon active
-- root scheduled tasks likely present
+- root scheduled tasks are likely present
 
 ---
 

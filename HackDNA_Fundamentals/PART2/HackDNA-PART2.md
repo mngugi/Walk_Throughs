@@ -1013,7 +1013,7 @@ Root flag obtained
 
 Allowed arbitrary file reads:
 
-- `/etc/passwd`
+- `/etc/passwd.`
 - `.bash_history`
 
 ---

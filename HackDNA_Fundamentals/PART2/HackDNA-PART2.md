@@ -352,7 +352,7 @@ Only accept IP headers from known proxy infrastructure.
 
 ## Validate Source IP Server-Side
 
-Use server-obtained connection IP instead of headers.
+Use the server-obtained connection IP instead of headers.
 
 ---
 

@@ -1070,7 +1070,7 @@ With strict permissions:
 
 ```bash
 chmod 700 script.sh
-chown root:root script.sh
+chown root: root script.sh
 ```
 
 ---
@@ -1080,7 +1080,7 @@ chown root:root script.sh
 Avoid executing privileged code from:
 
 - `/tmp`
-- `/dev/shm`
+- `/dev/shm.`
 - user-controlled paths
 
 ---

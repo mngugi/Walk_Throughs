@@ -51,7 +51,7 @@ Use `curl` to access the FTP server anonymously.
 ## Command
 
 ```bash
-curl ftp://34.245.169.217/flag.txt --user anonymous:anonymous
+curl ftp://34.245.169.217/flag.txt --user anonymous: anonymous
 ```
 
 ---

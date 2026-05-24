@@ -204,7 +204,7 @@ When applications trust this header without proper validation, attackers can spo
 
 # Objective
 
-Bypass access restrictions by manipulating HTTP headers and retrieve the hidden flag endpoint.
+Bypass access restrictions by manipulating HTTP headers and retrieving the hidden flag endpoint.
 
 ---
 

@@ -211,7 +211,7 @@ Even exposed tokens should have minimal permissions.
 
 Instead of:
 
-```javascript
+```JavaScript
 const db_password = "root123";
 ```
 
@@ -790,19 +790,19 @@ echo 'eyJyb2xlIjoidXNlciJ9' | base64 -d
 Decoded result:
 
 ```json
-{"role":"user"}
+{"role": "user"}
 ```
 
 Modify the value:
 
 ```json
-{"role":"admin"}
+{"role": "admin"}
 ```
 
 Re-encode:
 
 ```bash
-echo '{"role":"admin"}' | base64
+echo '{"role": "admin"}' | base64
 ```
 
 Replace the cookie with the new encoded value.
@@ -823,8 +823,8 @@ Example decoded payload:
 
 ```json
 {
-  "user":"guest",
-  "role":"user"
+  "user": "guest",
+  "role": "user"
 }
 ```
 

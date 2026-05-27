@@ -1824,10 +1824,12 @@ Some applications incorrectly enforce authentication logic inside JavaScript.
 
 Example:
 
-```javascript
+```JavaScript
+
 if(password == "admin123"){
     loginSuccess();
 }
+
 ```
 
 Attackers inspecting source code can recover credentials directly.
@@ -2023,7 +2025,7 @@ Secure authentication requires strong validation, secure session handling, layer
 
 ## Challenge Scenario
 
-SecureVault Technologies claims their website is protected with advanced client-side security controls. The application attempts to prevent inspection by:
+SecureVault Technologies claims its website is protected with advanced client-side security controls. The application attempts to prevent inspection by:
 
 * Disabling right-click
 * Blocking developer tools
@@ -2384,7 +2386,7 @@ Many real-world applications attempt to rely on:
 * Anti-debugging JavaScript
 * Minified code
 
-These measures may inconvenience casual users but do not stop attackers.
+These measures may inconvenience casual users, but do not stop attackers.
 
 Security through obscurity is not effective protection.
 
@@ -2496,7 +2498,7 @@ http://52.215.222.152/index.php?page=/root/flag.txt
 
 An attacker can:
 
-* Read sensitive system files (e.g. `/etc/passwd`)
+* Read sensitive system files (e.g., `/etc/passwd`)
 * Access application source code
 * Extract database credentials
 * Discover internal configuration

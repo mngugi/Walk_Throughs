@@ -1121,13 +1121,13 @@ const adminPassword = "SuperSecret123";
 
 Exposed API token:
 
-```javascript
+```JavaScript
 const api_key = "dev-api-key-001";
 ```
 
 Debug endpoint:
 
-```javascript
+```JavaScript
 const debug_url = "/admin/debug";
 ```
 
@@ -1147,8 +1147,8 @@ Discovered credentials or hidden endpoints may provide:
 
 Example workflow:
 
-1. Discover hidden admin credential in source
-2. Navigate to login page
+1. Discover hidden admin credential in the source
+2. Navigate to the login page
 3. Authenticate using exposed password
 4. Gain unauthorized access
 

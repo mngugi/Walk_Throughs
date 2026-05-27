@@ -61,7 +61,7 @@ inside the source.
 <input type="hidden" value="admin:true">
 ```
 
-```javascript
+```JavaScript
 const api_key = "dev-test-key-123";
 ```
 
@@ -111,7 +111,7 @@ backup
 
 **Example:**
 
-```javascript
+```JavaScript
 const adminPassword = "SuperSecret123";
 ```
 

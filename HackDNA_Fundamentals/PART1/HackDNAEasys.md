@@ -18,7 +18,7 @@
 
 # Reconnaissance
 
-+ The first step involves inspecting the application source.
++ The first step is to inspect the application source.
 
 + Open the target page and view the source code:
 

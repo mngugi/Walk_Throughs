@@ -413,7 +413,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 > X-Forwarded-For: 3.252.233.93
 > Content-Length: 9
 > Content-Type: application/x-www-form-urlencoded
-> 
+
 * upload completely sent off: 9 bytes
 < HTTP/1.1 302 Found
 < Date: Thu, 21 May 2026 18:55:01 GMT

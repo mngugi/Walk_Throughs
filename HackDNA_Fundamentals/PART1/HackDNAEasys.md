@@ -4,7 +4,7 @@
 
 ## Challenge Overview
 
-> The application exposes sensitive information directly inside the client-side source code. Attackers commonly inspect HTML, JavaScript files, comments, hidden fields, API endpoints, and embedded configuration values to discover secrets unintentionally left by developers.
+The application exposes sensitive information directly inside the client-side source code. Attackers commonly inspect HTML, JavaScript files, comments, hidden fields, API endpoints, and embedded configuration values to discover secrets unintentionally left by developers.
 
 > This challenge demonstrates how insecure source-code exposure can lead to information disclosure and privilege escalation.
 

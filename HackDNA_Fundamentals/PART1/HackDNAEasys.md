@@ -2441,7 +2441,7 @@ The application uses a dynamic `page` parameter:
 http://52.215.222.152/index.php?page=...
 ```
 
-This value is directly passed into a PHP `include()` function without proper validation, allowing path traversal and sensitive file disclosure.
+> This value is directly passed into a PHP `include()` function without proper validation, allowing path traversal and sensitive file disclosure.
 
 ---
 

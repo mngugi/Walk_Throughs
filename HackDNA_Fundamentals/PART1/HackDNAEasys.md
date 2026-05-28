@@ -2171,7 +2171,7 @@ Example:
 
 or:
 
-```javascript
+```JavaScript
 const adminKey = "SVT-admin-2026";
 ```
 

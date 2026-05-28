@@ -70,7 +70,7 @@ This represents the retrieved flag from the FTP service.
 
 # Alternative FTP Access
 
-Using interactive FTP client:
+Using an interactive FTP client:
 
 ```bash
 ftp 34.245.169.217

@@ -1,6 +1,6 @@
-## Secrets in Source 2
+# Secrets in Source 2
 
-# HackDNA – Secrets in Source 2
+## HackDNA – Secrets in Source 2
 
 ## Challenge Overview
 
@@ -267,7 +267,7 @@ Secure development practices, automated secret scanning, and proper server-side 
 
 ---
 
-## HackDNA – Nmap Lab 102
+# HackDNA – Nmap Lab 102
 
 ## Challenge Overview
 

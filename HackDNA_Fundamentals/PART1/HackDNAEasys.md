@@ -2277,8 +2277,8 @@ Example response:
 
 ```json
 {
-  "debug":"enabled",
-  "admin":"true"
+  "debug": "enabled",
+  "admin": "true"
 }
 ```
 

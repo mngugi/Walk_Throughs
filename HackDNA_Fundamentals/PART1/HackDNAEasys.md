@@ -1049,7 +1049,9 @@ CTRL + U
 or:
 
 ```bash
+
 Right Click → View Page Source
+
 ```
 
 Review the entire HTML document carefully.

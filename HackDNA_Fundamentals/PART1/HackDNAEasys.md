@@ -74,7 +74,9 @@ const api_key = "dev-test-key-123";
 + Inspect loaded JavaScript files using browser developer tools.
 
 ```bash
+
 F12 → Sources
+
 ```
 
 or inspect script references:

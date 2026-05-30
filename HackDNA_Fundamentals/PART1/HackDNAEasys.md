@@ -1119,7 +1119,7 @@ internal
 
 Hardcoded credential:
 
-```javascript
+```JavaScript
 const adminPassword = "SuperSecret123";
 ```
 

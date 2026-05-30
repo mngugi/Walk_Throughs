@@ -2222,8 +2222,10 @@ Flags may be intentionally hidden inside:
 
 Example:
 
-```javascript
+```JavaScript
+
 console.log("flag{client_side_security_fails}")
+
 ```
 
 or:

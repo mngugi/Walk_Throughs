@@ -1,10 +1,10 @@
-## Secrets in Source 2
+# Secrets in Source 2
 
-# HackDNA – Secrets in Source 2
+## HackDNA – Secrets in Source 2
 
 ## Challenge Overview
 
-> The application exposes sensitive information directly inside the client-side source code. Attackers commonly inspect HTML, JavaScript files, comments, hidden fields, API endpoints, and embedded configuration values to discover secrets unintentionally left by developers.
+The application exposes sensitive information directly inside the client-side source code. Attackers commonly inspect HTML, JavaScript files, comments, hidden fields, API endpoints, and embedded configuration values to discover secrets unintentionally left by developers.
 
 > This challenge demonstrates how insecure source-code exposure can lead to information disclosure and privilege escalation.
 
@@ -18,7 +18,7 @@
 
 # Reconnaissance
 
-+ The first step involves inspecting the application source.
++ The first step is to inspect the application source.
 
 + Open the target page and view the source code:
 
@@ -61,7 +61,7 @@ inside the source.
 <input type="hidden" value="admin:true">
 ```
 
-```javascript
+```JavaScript
 const api_key = "dev-test-key-123";
 ```
 
@@ -74,7 +74,9 @@ const api_key = "dev-test-key-123";
 + Inspect loaded JavaScript files using browser developer tools.
 
 ```bash
+
 F12 → Sources
+
 ```
 
 or inspect script references:
@@ -111,7 +113,7 @@ backup
 
 **Example:**
 
-```javascript
+```JavaScript
 const adminPassword = "SuperSecret123";
 ```
 
@@ -211,7 +213,7 @@ Even exposed tokens should have minimal permissions.
 
 Instead of:
 
-```javascript
+```JavaScript
 const db_password = "root123";
 ```
 
@@ -265,7 +267,7 @@ Secure development practices, automated secret scanning, and proper server-side 
 
 ---
 
-## HackDNA – Nmap Lab 102
+# HackDNA – Nmap Lab 102
 
 ## Challenge Overview
 
@@ -790,19 +792,19 @@ echo 'eyJyb2xlIjoidXNlciJ9' | base64 -d
 Decoded result:
 
 ```json
-{"role":"user"}
+{"role": "user"}
 ```
 
 Modify the value:
 
 ```json
-{"role":"admin"}
+{"role": "admin"}
 ```
 
 Re-encode:
 
 ```bash
-echo '{"role":"admin"}' | base64
+echo '{"role": "admin"}' | base64
 ```
 
 Replace the cookie with the new encoded value.
@@ -823,8 +825,8 @@ Example decoded payload:
 
 ```json
 {
-  "user":"guest",
-  "role":"user"
+  "user": "guest",
+  "role": "user"
 }
 ```
 
@@ -1049,7 +1051,9 @@ CTRL + U
 or:
 
 ```bash
+
 Right Click → View Page Source
+
 ```
 
 Review the entire HTML document carefully.
@@ -1115,19 +1119,19 @@ internal
 
 Hardcoded credential:
 
-```javascript
+```JavaScript
 const adminPassword = "SuperSecret123";
 ```
 
 Exposed API token:
 
-```javascript
+```JavaScript
 const api_key = "dev-api-key-001";
 ```
 
 Debug endpoint:
 
-```javascript
+```JavaScript
 const debug_url = "/admin/debug";
 ```
 
@@ -1147,8 +1151,8 @@ Discovered credentials or hidden endpoints may provide:
 
 Example workflow:
 
-1. Discover hidden admin credential in source
-2. Navigate to login page
+1. Discover hidden admin credential in the source
+2. Navigate to the login page
 3. Authenticate using exposed password
 4. Gain unauthorized access
 
@@ -1824,10 +1828,12 @@ Some applications incorrectly enforce authentication logic inside JavaScript.
 
 Example:
 
-```javascript
+```JavaScript
+
 if(password == "admin123"){
     loginSuccess();
 }
+
 ```
 
 Attackers inspecting source code can recover credentials directly.
@@ -2023,7 +2029,7 @@ Secure authentication requires strong validation, secure session handling, layer
 
 ## Challenge Scenario
 
-SecureVault Technologies claims their website is protected with advanced client-side security controls. The application attempts to prevent inspection by:
+SecureVault Technologies claims its website is protected with advanced client-side security controls. The application attempts to prevent inspection by:
 
 * Disabling right-click
 * Blocking developer tools
@@ -2079,7 +2085,7 @@ window.oncontextmenu = function() {
 
 or:
 
-```javascript
+```JavaScript
 document.onkeydown = function(e) {
     if (e.keyCode == 123) {
         return false;
@@ -2169,7 +2175,7 @@ Example:
 
 or:
 
-```javascript
+```JavaScript
 const adminKey = "SVT-admin-2026";
 ```
 
@@ -2216,8 +2222,10 @@ Flags may be intentionally hidden inside:
 
 Example:
 
-```javascript
+```JavaScript
+
 console.log("flag{client_side_security_fails}")
+
 ```
 
 or:
@@ -2271,8 +2279,8 @@ Example response:
 
 ```json
 {
-  "debug":"enabled",
-  "admin":"true"
+  "debug": "enabled",
+  "admin": "true"
 }
 ```
 
@@ -2384,7 +2392,7 @@ Many real-world applications attempt to rely on:
 * Anti-debugging JavaScript
 * Minified code
 
-These measures may inconvenience casual users but do not stop attackers.
+These measures may inconvenience casual users, but do not stop attackers.
 
 Security through obscurity is not effective protection.
 
@@ -2439,7 +2447,7 @@ The application uses a dynamic `page` parameter:
 http://52.215.222.152/index.php?page=...
 ```
 
-This value is directly passed into a PHP `include()` function without proper validation, allowing path traversal and sensitive file disclosure.
+> This value is directly passed into a PHP `include()` function without proper validation, allowing path traversal and sensitive file disclosure.
 
 ---
 
@@ -2496,7 +2504,7 @@ http://52.215.222.152/index.php?page=/root/flag.txt
 
 An attacker can:
 
-* Read sensitive system files (e.g. `/etc/passwd`)
+* Read sensitive system files (e.g., `/etc/passwd`)
 * Access application source code
 * Extract database credentials
 * Discover internal configuration

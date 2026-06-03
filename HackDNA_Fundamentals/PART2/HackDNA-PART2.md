@@ -40,6 +40,7 @@ Standard FTP port:
 
 ```
 21/tcp
+
 ```
 
 ---
@@ -51,7 +52,9 @@ Use `curl` to access the FTP server anonymously.
 ## Command
 
 ```bash
+
 curl ftp://34.245.169.217/flag.txt --user anonymous: anonymous
+
 ```
 
 ---
@@ -70,7 +73,7 @@ This represents the retrieved flag from the FTP service.
 
 # Alternative FTP Access
 
-Using interactive FTP client:
+Using an interactive FTP client:
 
 ```bash
 ftp 34.245.169.217
@@ -410,7 +413,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 > X-Forwarded-For: 3.252.233.93
 > Content-Length: 9
 > Content-Type: application/x-www-form-urlencoded
-> 
+
 * upload completely sent off: 9 bytes
 < HTTP/1.1 302 Found
 < Date: Thu, 21 May 2026 18:55:01 GMT

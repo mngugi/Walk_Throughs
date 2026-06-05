@@ -1482,5 +1482,6 @@ This single design flaw allowed full root compromise without requiring:
 - SUID abuse
 - kernel exploits
 - password cracking
+  
 ```
 

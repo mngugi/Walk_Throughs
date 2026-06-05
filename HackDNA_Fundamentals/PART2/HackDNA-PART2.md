@@ -194,7 +194,6 @@ This lab demonstrates how a simple misconfiguration in FTP services can expose s
 
 ---
 
-
 # HackDNA – Spoofed Header Access (X-Forwarded-For)
 
 ## Challenge Overview

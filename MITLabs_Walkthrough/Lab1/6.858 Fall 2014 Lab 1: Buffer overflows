@@ -1,4 +1,0 @@
-## 6.858 Fall 2014 Lab 1: Buffer overflows
-
-
-**Lab 1**: you will explore the base structure of the zoobar web application, and use buffer overrun attacks to break its security properties.

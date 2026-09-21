@@ -3,7 +3,9 @@
 This is a JWT (JSON Web Token), and its **header** and **payload** are base64url-encoded, so you can decode them directly. The **signature** cannot be verified without the relevant public key, but here's what the token contains.
 
 ### Investigate 
+
 ```Bash
+
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vandrcy5icmlnaHR3YXktY2RuLmV4YW1wbGUva2V5cy9wcm9kLmpzb24iLCJraWQiOiJwcm9kLTIwMjYtMDgifQ.eyJpc3MiOiJodHRwczovL2F1dGguYnJpZ2h0d2F5LmV4YW1wbGUiLCJhdWQiOiJodHRwczovL2FwaS5jYWxkZXJhLmV4YW1wbGUiLCJzdWIiOiJwYXJ0bmVyOmJyaWdodHdheS1mcmVpZ2h0Iiwic2NvcGUiOiJzaGlwbWVudHM6cmVhZCBzaGlwbWVudHM6d3JpdGUiLCJpYXQiOjE3ODk5ODEyMDAsImV4cCI6MTc4OTk4NDgwMH0.hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2 Header { "alg": "RS256", "typ": "JWT", "jku": "https://jwks.brightway-cdn.example/keys/prod.json", "kid": "prod-2026-08" } Payload { "iss": "https://auth.brightway.example", "aud": "https://api.caldera.example", "sub": "partner:brightway-freight", "scope": "shipments:read shipments:write", "iat": 1789981200, "exp": 1789984800 } Signature RS256 hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2 Reset token Your answer Host the verifier would fetch the signing key from:
 
 ```
@@ -101,11 +103,9 @@ The host the verifier would fetch the signing key from is:
 
 The `jku` (JWK Set URL) header tells the verifying library where to download the public keys. It's attacker-controlled, which is exactly the vulnerability — a forged token can point `jku` at a server the attacker runs and supply a matching key.
 
-How it works Three hosts, three different jobs, and only one of them is a key source. The payload carries iss set to https\://auth.brightway.example, which says who claims to have issued the token, and aud set to https\://api.caldera.example, which says who the token is for. Neither is consulted to find a key: iss is a claim inside the signed body, and checking it before verification would be circular. The header carries kid, prod-2026-08, which names a key but does not say where it lives, and jku, https\://jwks.brightway-cdn.example/keys/prod.json. jku is the JWK Set URL. It is defined in RFC 7515, it means fetch the verification keys from here, and a library that honours it will make that HTTP request before it validates anything. So the host is jwks.brightway-cdn.example. Now see why that is fatal. The header is not signed in any way the verifier can use before it has a key, so whoever sends the token writes the header, including jku. An attacker generates their own key pair, signs a token with whatever claims they like, publishes the matching public key as a JWK Set on a host they control, points jku at it, and the verifier obligingly downloads the attacker's key and confirms that the attacker's signature is valid. The signature check passes honestly; it was just performed against the wrong key. Note that the lookalike host helps the attack survive a human review: brightway-cdn.example reads like partner infrastructure next to auth.brightway.example, but it is a separate registration and the two have nothing to do with each other. The answer is jwks.brightway-cdn.example.   lets write a report in markdown raw language
+How it works Three hosts, three different jobs, and only one of them is a key source. The payload carries iss set to https\://auth.brightway.example, which says who claims to have issued the token, and aud set to https\://api.caldera.example, which says who the token is for. Neither is consulted to find a key: iss is a claim inside the signed body, and checking it before verification would be circular. The header carries kid, prod-2026-08, which names a key but does not say where it lives, and jku, https\://jwks.brightway-cdn.example/keys/prod.json. jku is the JWK Set URL. It is defined in RFC 7515; it means fetch the verification keys from here, and a library that honours it will make that HTTP request before it validates anything. So the host is jwks.brightway-cdn.example. Now see why that is fatal. The header is not signed in any way the verifier can use before it has a key, so whoever sends the token writes the header, including jku. An attacker generates their own key pair, signs a token with whatever claims they like, publishes the matching public key as a JWK Set on a host they control, points jku at it, and the verifier obligingly downloads the attacker's key and confirms that the attacker's signature is valid. The signature check passes honestly; it was just performed against the wrong key. Note that the lookalike host helps the attack survive a human review: brightway-cdn.example reads like partner infrastructure next to auth. brightway. example, but it is a separate registration, and the two have nothing to do with each other. The answer is jwks.brightway-cdn.example.  
 
-svg
 
-markdown
 
 ```
 # JWT `jku` Header Injection — Report
@@ -123,11 +123,11 @@ signing key and have their forged token accepted.
 
 ```
 
-svgsvg
+
 
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vandrcy5icmlnaHR3YXktY2RuLmV4YW1wbGUva2V5cy9wcm9kLmpzb24iLCJraWQiOiJwcm9kLTIwMjYtMDgifQ.eyJpc3MiOiJodHRwczovL2F1dGguYnJpZ2h0d2F5LmV4YW1wbGUiLCJhdWQiOiJodHRwczovL2FwaS5jYWxkZXJhLmV4YW1wbGUiLCJzdWIiOiJwYXJ0bmVyOmJyaWdodHdheS1mcmVpZ2h0Iiwic2NvcGUiOiJzaGlwbWVudHM6cmVhZCBzaGlwbWVudHM6d3JpdGUiLCJpYXQiOjE3ODk5ODEyMDAsImV4cCI6MTc4OTk4NDgwMH0.hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2
 
-text
+
 
 ````
 ### Header

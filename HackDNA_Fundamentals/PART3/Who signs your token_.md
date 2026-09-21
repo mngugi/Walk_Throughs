@@ -123,13 +123,13 @@ signing key and have their forged token accepted.
 
 ```
 
-
+```Bash
 
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vandrcy5icmlnaHR3YXktY2RuLmV4YW1wbGUva2V5cy9wcm9kLmpzb24iLCJraWQiOiJwcm9kLTIwMjYtMDgifQ.eyJpc3MiOiJodHRwczovL2F1dGguYnJpZ2h0d2F5LmV4YW1wbGUiLCJhdWQiOiJodHRwczovL2FwaS5jYWxkZXJhLmV4YW1wbGUiLCJzdWIiOiJwYXJ0bmVyOmJyaWdodHdheS1mcmVpZ2h0Iiwic2NvcGUiOiJzaGlwbWVudHM6cmVhZCBzaGlwbWVudHM6d3JpdGUiLCJpYXQiOjE3ODk5ODEyMDAsImV4cCI6MTc4OTk4NDgwMH0.hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2
 
 
 
-````
+```
 ### Header
 
 ```json

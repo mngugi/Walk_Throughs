@@ -43,7 +43,7 @@ json
 }
 ```
 
-svgsvg
+
 
 Decoded claims:
 

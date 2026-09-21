@@ -185,7 +185,7 @@ Whoever sends the token writes the header — including `jku`.
 2. Attacker crafts a token with arbitrary claims (e.g., elevated scope,
    impersonated partner), signs it with their private key.
 3. Attacker publishes the matching public key as a JWK Set on a host they control.
-4. Attacker sets `jku` in the header to point at that host.
+4. Attacker sets `jku` in the header to point to that host.
 5. The verifier downloads the attacker's key and confirms the attacker's signature
    is valid.
 
@@ -195,14 +195,14 @@ The signature check **passes honestly** — it was simply performed against the
 ## Why the Lookalike Host Helps the Attack
 
 `brightway-cdn.example` reads like partner infrastructure sitting next to
-`auth.brightway.example`. In a human review it looks plausible — but it is a
+`auth.brightway.example`. In a human review, it looks plausible — but it is a
 **separate registration** with nothing to do with the real issuer. This social
 camouflage lets the attack survive casual inspection.
 
 ## Answer
 
 > **Host the verifier would fetch the signing key from:**
-> `jwks.brightway-cdn.example`
+> `jwks.brightway-cdn.example.`
 
 ## Remediation
 
@@ -234,6 +234,4 @@ lookup, and `jku` is attacker-chosen — so the verifier happily trusts a key th
 attacker supplied.
 ```
 
-svgsvg
-
-*This response is AI-generated, for reference only.*
+---

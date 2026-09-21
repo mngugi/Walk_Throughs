@@ -1,6 +1,4 @@
-7fA2
-
-svg
+## Crytography
 
 This is a JWT (JSON Web Token), and its **header** and **payload** are just base64url-encoded — so they can be decoded directly. The **signature** cannot be verified without the relevant public key, but here's what the token contains.
 

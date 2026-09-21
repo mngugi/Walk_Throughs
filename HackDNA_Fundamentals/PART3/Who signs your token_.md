@@ -1,6 +1,6 @@
 ## Crytography
 
-This is a JWT (JSON Web Token), and its **header** and **payload** are just base64url-encoded — so they can be decoded directly. The **signature** cannot be verified without the relevant public key, but here's what the token contains.
+This is a JWT (JSON Web Token), and its **header** and **payload** are base64url-encoded, so you can decode them directly. The **signature** cannot be verified without the relevant public key, but here's what the token contains.
 
 ### Investigate 
 ```Bash
@@ -78,9 +78,22 @@ If you just wanted the contents: the token grants the `brightway-freight` partne
 
 *This response is AI-generated, for reference only.*
 
-This was the mission  Mission briefing Hide briefing Caldera's shipment API accepts signed tokens from partner carriers. A token arrives; the API needs the public key that will verify it, and the library it uses is helpful: rather than making the team maintain a list of partner keys, it reads where to fetch the key from the token itself. That is a real header field; it is in the specification, and libraries really do honour it. Three different hostnames appear in this token, and they are all plausible. Only one of them decides whether the signature is trusted, and it is the one an attacker gets to choose. Decode the token and submit the host the verifier would go to for the key.  Investigate eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vandrcy5icmlnaHR3YXktY2RuLmV4YW1wbGUva2V5cy9wcm9kLmpzb24iLCJraWQiOiJwcm9kLTIwMjYtMDgifQ.eyJpc3MiOiJodHRwczovL2F1dGguYnJpZ2h0d2F5LmV4YW1wbGUiLCJhdWQiOiJodHRwczovL2FwaS5jYWxkZXJhLmV4YW1wbGUiLCJzdWIiOiJwYXJ0bmVyOmJyaWdodHdheS1mcmVpZ2h0Iiwic2NvcGUiOiJzaGlwbWVudHM6cmVhZCBzaGlwbWVudHM6d3JpdGUiLCJpYXQiOjE3ODk5ODEyMDAsImV4cCI6MTc4OTk4NDgwMH0.hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2 Header {   "alg": "RS256",   "typ": "JWT",   "jku": "https\://jwks.brightway-cdn.example/keys/prod.json",   "kid": "prod-2026-08" } Payload {   "iss": "https\://auth.brightway.example",   "aud": "https\://api.caldera.example",   "sub": "partner\:brightway-freight",   "scope": "shipments\:read shipments\:write",   "iat": 1789981200,   "exp": 1789984800 } Signature RS256 hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2 Reset token Your answer Host the verifier would fetch the signing key from:
+This was the mission  briefing: Caldera's shipment API accepts signed tokens from partner carriers. A token arrives; the API needs the public key that will verify it, and the library it uses is helpful: rather than making the team maintain a list of partner keys, it reads where to fetch the key from the token itself. That is a real header field; it is in the specification, and libraries really do honour it. Three different hostnames appear in this token, and they are all plausible. Only one of them decides whether the signature is trusted, and it is the one an attacker gets to choose. Decode the token and submit the host the verifier would go to for the key. 
 
-svg
+
+### Investigate 
+
+```Bash
+
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vandrcy5icmlnaHR3YXktY2RuLmV4YW1wbGUva2V5cy9wcm9kLmpzb24iLCJraWQiOiJwcm9kLTIwMjYtMDgifQ.eyJpc3MiOiJodHRwczovL2F1dGguYnJpZ2h0d2F5LmV4YW1wbGUiLCJhdWQiOiJodHRwczovL2FwaS5jYWxkZXJhLmV4YW1wbGUiLCJzdWIiOiJwYXJ0bmVyOmJyaWdodHdheS1mcmVpZ2h0Iiwic2NvcGUiOiJzaGlwbWVudHM6cmVhZCBzaGlwbWVudHM6d3JpdGUiLCJpYXQiOjE3ODk5ODEyMDAsImV4cCI6MTc4OTk4NDgwMH0.hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2
+
+```
+
+```html
+Header {   "alg": "RS256",   "typ": "JWT",   "jku": "https\://jwks.brightway-cdn.example/keys/prod.json",   "kid": "prod-2026-08" } Payload {   "iss": "https\://auth.brightway.example",   "aud": "https\://api.caldera.example",   "sub": "partner\:brightway-freight",   "scope": "shipments\:read shipments\:write",   "iat": 1789981200,   "exp": 1789984800 } Signature RS256 hQ2mJ0rV8nT4wXpL6sC1yB9dF3gK7aZeR5uN0iO2tM8vP4xS1kD6jH9bW3cY7fA2 Reset token
+
+```
+Your answer: The verifier would fetch the signing key from:
 
 The host the verifier would fetch the signing key from is:
 

@@ -1,0 +1,28 @@
+## The sender nobody owns
+
+# SPF Dead Include — MER-4471
+
+## Finding
+
+**Dead SPF include:**
+
+`relay.driftsend.example.`
+
+## How It Works
+
+SPF is a **tree**, not a line. The `meridian.example` SPF record delegates to several other SPF records using `include:` mechanisms.
+
+The relevant branch is:
+
+```text
+meridian.example
+├── _spf.meridian.example
+│   └── ip4 leaf
+│
+├── _spf.parcelpal.example
+│   └── ip4 leaf
+│
+└── spf.mailhive.example
+    └── include:relay.driftsend.example
+        └── NXDOMAIN
+```

@@ -182,23 +182,23 @@ Check all include: mechanisms for:
 > Review other DNS-based trust relationships for similar abandoned third-party resources.
 Ticket Update
 
-MER-4471 — Dead SPF Include
+### MER-4471 — Dead SPF Include
 
 Walking the SPF tree identified `spf.mailhive.example` as a delegated SPF record containing `include:relay.driftsend.example.`
 
-A TXT lookup of relay.driftsend.example returns NXDOMAIN, confirming that the delegated hostname does not currently exist.
+A TXT lookup of relay. driftsend.example returns NXDOMAIN, confirming that the delegated hostname does not currently exist.
 
 The finding is therefore a dangling/dead SPF include. The obsolete Driftsend delegation should be removed or replaced, followed by a complete re-walk of the SPF tree to identify any additional lapsed vendor dependencies.
 
-Final Finding
+### Final Finding
 
-Dead SPF include: relay.driftsend.example
+**Dead SPF include:** relay.driftsend.example
 
-DNS status: NXDOMAIN
+**DNS status:** NXDOMAIN
 
-Parent record: spf.mailhive.example
+**Parent record:** spf.mailhive.example
 
-Vulnerability: Dangling/obsolete SPF include: delegation
+**Vulnerability:** Dangling/obsolete SPF include: delegation
 
 ```text
 Ticket: MER-4471

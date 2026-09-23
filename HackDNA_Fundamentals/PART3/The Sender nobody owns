@@ -30,17 +30,24 @@ meridian.example
 
 The first two includes resolve normally to ip4 mechanisms. However, spf.mailhive.example contains another delegation:
 
+```text
 v=spf1 ip4:203.0.113.64/27 include:relay.driftsend.example -all
 
+```
 Following that include: requires another DNS TXT lookup:
 
+```text
 dig relay.driftsend.example TXT
 
+```
 The result is:
 
+
+```text
 ;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 0
 
+```
 This confirms that:
 
 relay.driftsend.example
@@ -57,6 +64,8 @@ As a result, SPF evaluation of mail claiming to originate from meridian.example 
 
 Conceptually:
 
+```text
+
 meridian.example
        |
        v
@@ -69,6 +78,8 @@ relay.driftsend.example
        | NXDOMAIN
        v
    DEAD BRANCH
+
+```
 
 The security issue is therefore a dangling SPF include.
 
@@ -83,9 +94,11 @@ dig spf.mailhive.example TXT
 
 Relevant response:
 
+```text
 spf.mailhive.example. 1800 IN TXT
 "v=spf1 ip4:203.0.113.64/27 include:relay.driftsend.example -all"
 
+```
 This establishes the delegation to:
 
 relay.driftsend.example
@@ -93,18 +106,25 @@ relay.driftsend.example
 
 Command:
 
+```text
 dig relay.driftsend.example TXT
 
+```
 Response:
+
+```text
 
 ;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
 
+```
 The important fields are:
 
+```text
 status: NXDOMAIN
 ANSWER: 0
 
+```
 NXDOMAIN means that the queried DNS name does not exist.
 
 The SOA record appearing in the AUTHORITY SECTION belongs to the enclosing example. zone. It does not mean that relay.driftsend.example exists.
@@ -117,10 +137,11 @@ An attacker who can legitimately register the abandoned delegated name could pot
 
 This could be particularly relevant to phishing or invoice-fraud campaigns because SPF validation may report the message as passing for the victim domain.
 
-Root Cause
+### Root Cause
 
 The apparent root cause is failure to remove an obsolete third-party SPF dependency after the vendor relationship ended.
 
+```text
 Vendor relationship ended
         |
         v
@@ -136,26 +157,32 @@ Parent SPF record retained include:
 Dangling SPF delegation
 Remediation
 
+```
+
 Remove the obsolete:
 
+```text
 include:relay.driftsend.example
+
+```
 
 from the SPF chain.
 
 If a replacement vendor is required, replace it with the vendor's currently authorized SPF mechanism.
 Re-walk the complete SPF tree after the change.
 Check all include: mechanisms for:
-NXDOMAIN
-obsolete vendors
-abandoned domains
-unexpected third-party dependencies
-unnecessarily broad authorization
-Review other DNS-based trust relationships for similar abandoned third-party resources.
++ NXDOMAIN
++ obsolete vendors
++ abandoned domains
++ unexpected third-party dependencies
++ unnecessarily broad authorization
+
+> Review other DNS-based trust relationships for similar abandoned third-party resources.
 Ticket Update
 
 MER-4471 — Dead SPF Include
 
-Walking the SPF tree identified spf.mailhive.example as a delegated SPF record containing include:relay.driftsend.example.
+Walking the SPF tree identified `spf.mailhive.example` as a delegated SPF record containing `include:relay.driftsend.example.`
 
 A TXT lookup of relay.driftsend.example returns NXDOMAIN, confirming that the delegated hostname does not currently exist.
 

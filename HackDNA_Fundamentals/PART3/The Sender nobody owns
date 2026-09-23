@@ -31,10 +31,10 @@ meridian.example
 The first two includes resolve normally to ip4 mechanisms. However, spf.mailhive.example contains another delegation:
 
 ```text
-v=spf1 ip4:203.0.113.64/27 include:relay.driftsend.example -all
+v=spf1 ip4:203.0.113.64/27 include: relay. driftsend.example -all
 
 ```
-Following that include: requires another DNS TXT lookup:
+Following that, include: requires another DNS TXT lookup:
 
 ```text
 dig relay.driftsend.example TXT
@@ -58,7 +58,7 @@ Why This Is a Vulnerability
 
 The SPF tree still contains a delegation to a hostname that no longer exists.
 
-According to the ticket, Driftsend's contract ended on 2026-03-31, the campaign account was closed, and the domain/name subsequently lapsed. MailHive did not remove the obsolete include: from its SPF record.
+According to the ticket, Driftsend's contract ended on `2026-03-31,` the campaign account was closed, and the domain/name subsequently lapsed. MailHive did not remove the obsolete include: from its SPF record.
 
 As a result, SPF evaluation of mail claiming to originate from meridian.example can still reach the obsolete Driftsend branch.
 
@@ -89,9 +89,11 @@ Evidence
 1. MailHive SPF Record
 
 Command:
+```text
 
 dig spf.mailhive.example TXT
 
+```
 Relevant response:
 
 ```text
@@ -198,4 +200,6 @@ Parent record: spf.mailhive.example
 
 Vulnerability: Dangling/obsolete SPF include: delegation
 
+```text
 Ticket: MER-4471
+``

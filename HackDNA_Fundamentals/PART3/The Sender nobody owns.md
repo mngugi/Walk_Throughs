@@ -1,6 +1,6 @@
 ## The sender nobody owns
 
-# SPF Dead Include — MER-4471
+## SPF Dead Include — MER-4471
 
 ## Finding
 
@@ -85,7 +85,8 @@ The security issue is therefore a dangling SPF include.
 
 If the abandoned hostname becomes registrable, an unauthorized party could potentially publish an SPF policy at that location and influence the SPF evaluation of the parent domain.
 
-Evidence
+### Evidence
+
 1. MailHive SPF Record
 
 Command:
@@ -131,7 +132,7 @@ NXDOMAIN means that the queried DNS name does not exist.
 
 The SOA record appearing in the AUTHORITY SECTION belongs to the enclosing example. zone. It does not mean that relay.driftsend.example exists.
 
-Impact
+### Impact
 
 The obsolete SPF delegation creates a dangling DNS/SPF trust relationship.
 
@@ -168,7 +169,7 @@ include:relay.driftsend.example
 
 ```
 
-from the SPF chain.
+**from the SPF chain**
 
 If a replacement vendor is required, replace it with the vendor's currently authorized SPF mechanism.
 Re-walk the complete SPF tree after the change.
@@ -202,4 +203,4 @@ The finding is therefore a dangling/dead SPF include. The obsolete Driftsend del
 
 ```text
 Ticket: MER-4471
-``
+```

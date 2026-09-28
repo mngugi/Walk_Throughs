@@ -9,9 +9,9 @@
 
 ## Mission Briefing
 
-A clinic group and a freight company, in different sectors and with no customers, staff or networks in common, were both robbed in the same week by a session that nobody ever logged into.
+A clinic group and a freight company, in different sectors and with no customers, staff, or networks in common, were both robbed in the same week by a session that nobody ever logged into.
 
-Neither one can find a phishing mail, a stolen password or a piece of malware, and both were running multi-factor authentication that was never challenged.
+Neither one can find a phishing email, a stolen password, or a piece of malware, and both were running multi-factor authentication that was never challenged.
 
 What two organisations like that share is **suppliers**. Six public records are on the board. Work out which supplier is in both stories and is the one that can create a session without a login.
 
@@ -26,7 +26,7 @@ Date: Tue, 8 Sep 2026 17:02:11 +0000
 Subject: [members] Unauthorised access to the patient portal - what we know
 
 
-On 4 September an account with staff privileges was used to export 11,400 patient records. The account belongs to a clinician who was on leave and did not log in. There was no phishing email. Multi-factor authentication was enabled on the account and was not challenged, because the session was not created by a login: **it was created by a support agent using the assist feature in our helpdesk suite.**
+On 4 September, an account with staff privileges was used to export 11,400 patient records. The account belongs to a clinician who was on leave and did not log in. There was no phishing email. Multi-factor authentication was enabled on the account and was not challenged because the session was not created by a login; **it was created by a support agent using the assist feature in our helpdesk suite.**
 
 **Our environment:**
 - Latchkey SSO

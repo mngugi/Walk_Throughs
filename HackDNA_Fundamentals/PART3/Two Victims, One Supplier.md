@@ -103,7 +103,7 @@ Experience running a regulated logistics environment is a plus.
 
 **u/mkane_ops – 11 Sep**
 
-> Two of our peers in the same sector got hit in the same week and neither of them can find an initial access vector. Same story both times: a staff session that nobody logged into.
+> Two of our peers in the same sector got hit in the same week, and neither of them can find an initial access vector. Same story both times: a staff session that nobody logged into.
 
 **u/harlow_infra – 11 Sep**
 

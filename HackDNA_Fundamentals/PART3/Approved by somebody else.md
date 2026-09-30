@@ -8,6 +8,11 @@
 
 ---
 
+How it works
+The claim is act, short for actor, and it is the standard way to say this token was issued through delegation. sub stays as the person whose authority is being used, d.okonkwo, and act records who is actually using it: agent.7741, a support agent, via console.harbourline.example. The AMR claim says delegation rather than pwd or MFA, which is the second tell. Nothing here is forged. The signature is valid, the token is exactly what the single sign-on service minted, and the payments API was right to honour it. The bug is on the logging side. The audit trail wrote down sub and stopped, so a delegated action from a support console was recorded as the finance director personally approving a refund at three in the morning. Every control downstream then behaved as if a director had acted: no second approver, no out-of-hours review, no anomaly on the account. Delegation is a feature worth having, and support teams genuinely need it. Recording both identities everywhere the first one appears is not optional.
+
+---
+
 ## 1. Summary
 
 A delegated JWT was presented to the payments API. The token was **valid, correctly signed, and correctly honored**. The defect is **not** in authentication or authorization — it is in **audit attribution**.

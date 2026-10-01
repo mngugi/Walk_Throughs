@@ -43,7 +43,7 @@ Kestrel-88
 ODgtbGVydHNlSw==
 
 ```
-Security Lesson
+### Security Lesson
 
 The fundamental weakness is that pw_enc is not a password hash.
 It is a reversible encoding.

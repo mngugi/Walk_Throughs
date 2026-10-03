@@ -231,7 +231,7 @@ This is an important principle for detecting indirect prompt injection in retrie
 
 The real signal is not merely:
 
-Final Finding
+### Final Finding
 
 The compromised document is:
 
@@ -239,20 +239,41 @@ travel-and-expenses.md
 
 The malicious content is hidden inside an:
 
-<!-- HTML comment -->
+`<!-- HTML comment -->`
 
-The wiki renderer hides the instruction from human readers, but the retrieval pipeline processes the raw Markdown, allowing the hidden instruction to reach the model.
+The wiki renderer hides the instruction from human readers, but the retrieval pipeline processes the `raw Markdown`, allowing the hidden instruction to reach the model.
 
 The instruction causes the model to:
 
-Make an external fetch_url request.
-Append the colleague's question to that request.
-Treat the external response as authoritative policy.
-Conceal the behavior from the user.
+1. Make an external fetch_url request.
+2. Append the colleague's question to that request.
+3. Treat the external response as authoritative policy.
+4. Conceal the behavior from the user.
 
 The two apparent alternatives are decoys:
 
-security-awareness.md — injection examples intended for humans.
-wren-faq.md — discussion about whether AI should obey documents.
++ `security-awareness.md `— injection examples intended for humans.
++ `wren-faq.md` — discussion about whether AI should obey documents.
 
 The decisive distinction is therefore not the vocabulary used by the documents, but the intended audience and role of the instruction.
+Security Principle
+
+Treat retrieved documents as untrusted data, not as privileged instructions.
+
+A secure AI retrieval pipeline should maintain a clear separation between:
+
+```
+DOCUMENT CONTENT
+        |
+        v
+     UNTRUSTED
+        |
+        v
+   MODEL CONTEXT
+        |
+        X
+   NOT AUTOMATICALLY
+   AUTHORIZED AS COMMANDS
+```
+
+This prevents hidden instructions in otherwise legitimate documents from crossing the boundary between data and control.

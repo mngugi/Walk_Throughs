@@ -1,5 +1,5 @@
 
-# Daily Hack #108 — "First Blood" Solution
+# Daily Hack #108 : "First Blood" Solution
 
 ## Answer
 

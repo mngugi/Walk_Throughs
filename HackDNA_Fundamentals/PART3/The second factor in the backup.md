@@ -47,7 +47,7 @@ The `otpauth://totp/` scheme is the standard Key URI Format used by authenticato
 | Corvid Mail      | d.okonkwo@fernpath.example     | `MZXW6YTBOJSGC43F`   |
 | Thornbury VPN    | dokonkwo@thornbury.example     | `NBSWY3DPFQQHO33S`   |
 
-All three use 6 digits and a 30-second period.
+All three use 6 digits and 30 seconds.
 
 ## 5. Why This Matters
 

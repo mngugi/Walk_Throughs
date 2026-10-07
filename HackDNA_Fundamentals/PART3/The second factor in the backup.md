@@ -1,4 +1,4 @@
-# TOTP Seed Exposure — Incident Notes
+# TOTP Seed Exposure Incident Notes
 
 ## 1. Summary
 

@@ -182,3 +182,69 @@ An **engagement** is one authorized testing job, with a client, a written scope 
 The owners of `shop.example` invite you **in writing** to test their website for one week. They give you a test account and a contact address for questions. Here are your notes at the end of the week:
 
 ---
+
+### Engagement:
+
+- shop.example (written authorization, test account provided)
+
++ Reconnaissance map: /, /products, /cart, /login, /account
++ Enumeration /login: "No account with that email" vs "Wrong password"
++ Exploitation proof: page confirms which emails have accounts
++ Reporting 2 pages: issue, steps, impact, fix
+
+  
+A careful reader notices three things:
+
+1. **Enumeration found two different error messages.** That difference turns *"there is a login page"* into *"there is a login page that leaks whether an account exists."*
+2. **Exploitation stopped at the proof.** You entered your test account and two made-up addresses, the page told you which one was real, and you went no further: no password guessing, no other accounts.
+3. **Exploitation takes one line.** The map, the careful questions and the written report are where the week went.
+
+---
+
+## Why Reporting Is the Paid Stage
+
+The report says:
+- **What** you found
+- **How** you found it
+- **Why** it matters (anyone can check whether a person shops here)
+- **How** to fix it (show the same message for both cases)
+
+The shop cannot fix a flaw it never reads about, so the report is what the client pays for. On a bug bounty, it is the step that gets you paid.
+
+> It is also what separates a professional from a criminal: **the same proof, without permission and without a report, is an attack.**
+
+---
+
+# 4. Browser Developer Tools
+
+**Lesson** · 3 min read
+
+This section covers the **four views** your browser already has for reading what a page sends: **view source**, the **Elements tab**, the **Network tab** and **Find**. Each view answers a different question. Each one comes with a two-line sample of what it might show on a fictional shop at `shop.example`.
+
+---
+
+## View Source
+
+View source shows the **raw HTML** the server sent, **before any script changed it**. Developer comments and hidden form fields live here.
+
+```html
+<!-- TODO: remove before launch, test login on staging.shop.example -->
+<input type="hidden" name="discount" value="0">
+
+---
+
+### The Elements Tab
+The developer tools open on the Elements tab, which Firefox calls Inspector. It shows the live page, including everything scripts added after the page loaded and everything the page keeps out of sight.
+
+```
+<p id="greeting">Welcome back, Dana</p>
+<button id="export-orders" hidden>Export all orders</button>
+
+
+```
+
+---
+
+### The Network Tab
+Open the Network tab, then reload the page. Every request the page makes appears in a list: images, scripts, and the background calls that fetch data from the server.
+

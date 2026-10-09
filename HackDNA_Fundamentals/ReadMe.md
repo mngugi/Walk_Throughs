@@ -281,7 +281,7 @@ Click any request in the Network tab and open its headers. A response header is 
 ```
 X-Powered-By: PHP/7.2.24
 
-```
+
 A careful reader notices three things:
 
 

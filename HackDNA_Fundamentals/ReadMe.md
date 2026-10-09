@@ -84,3 +84,64 @@ On this platform, **hacking** means *authorized testing*:
 - Use only tools you already have (your browser)
 - Stay legal: test only what you're invited to test
 - Section 6 contains your first hidden flag in the page source
+
+---
+
+# What Ethical Hacking Is
+
+**Lesson** · 3 min read
+
+This section defines ethical hacking, shows where the legal line sits, and covers four words you will meet throughout this course.
+
+---
+
+## The Mindset
+
+**Ethical hacking** means testing a system for weaknesses **with its owner's permission**, so the owner can fix them. It is a way of *reading* a system, and it comes before any tool.
+
+A login page shows two boxes and a button. A hacker asks:
+- What is the page **not** showing?
+- What happens when a field gets a value the developer never expected?
+- Who decided this button should be the only way in?
+
+Behind every screen is a set of rules someone wrote, and each rule rests on an **assumption**. The builder may assume:
+- That visitors only type what the form asks for
+- That nobody reads the page source
+- That a hidden button stays hidden
+
+> Ethical hacking is the habit of questioning those assumptions in a careful order and writing down the ones that turn out to be wrong.
+
+---
+
+## The Legal Line
+
+The skill is **not** illegal. Using it on a system you do not own, or have no permission to test, **is**.
+
+> What decides it is **authorization**, not technique.
+
+| Action | Legal? | Why |
+|--------|--------|-----|
+| Reading the source of a page you are visiting | ✅ Yes (everywhere) | The browser was given that code to display |
+| Logging into someone else's account | ❌ No | Even with an easy-to-guess password |
+
+In most countries **unauthorized access is a crime**, however curious you were.
+
+The same action can be a **paid job** on one site and a **crime** on another. Written permission is the only difference.
+
+---
+
+## Vocabulary
+
+| Term | Meaning |
+|------|---------|
+| **Flag** | A secret string you find by solving a challenge. Finding it proves you did the work. |
+| **CTF** | Capture The Flag: a style of challenge where solving a puzzle reveals a flag. |
+| **Practice platform** | A site like this one, where every target exists to be attacked. |
+| **Bug bounty** | A company's public invitation to find flaws under written rules. Valid reports get paid. |
+
+---
+
+## Worked Example: What a Flag Looks Like
+
+On HackerDNA, a flag is a **UUID**, which is a randomly generated identifier. Here is one:
+---

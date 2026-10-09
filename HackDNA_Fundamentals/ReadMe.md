@@ -231,6 +231,7 @@ View source shows the **raw HTML** the server sent, **before any script changed 
 <!-- TODO: remove before launch, test login on staging.shop.example -->
 <input type="hidden" name="discount" value="0">
 
+```
 ---
 
 ### The Elements Tab
@@ -245,6 +246,87 @@ The developer tools open on the Elements tab, which Firefox calls Inspector. It 
 
 ---
 
+
 ### The Network Tab
 Open the Network tab, then reload the page. Every request the page makes appears in a list: images, scripts, and the background calls that fetch data from the server.
+
+```
+GET  api.shop.example/v1/orders?customer=1042   200   json
+GET  shop.example/assets/app.js                  200   script
+
+```
+
+### Find
+Find searches any of these views for a string you care about, so you never have to read line by line.
+
+```text
+Search: staging
+2 matches   staging.shop.example   (line 14, line 88)
+
+```
+### Shortcuts
+
+```
+Action	Windows / Linux	macOS
+View page source	Ctrl+U	Cmd+Option+U
+Open developer tools	F12	Cmd+Option+I
+Find	Ctrl+F	Cmd+F
+Hard reload	Ctrl+Shift+R	Cmd+Shift+R
+
+```
+### Worked Example: One Response Header
+Click any request in the Network tab and open its headers. A response header is a line the server sends before the page itself, and most visitors never see one. Suppose one of them reads:
+
+```
+```
+X-Powered-By: PHP/7.2.24
+
+```
+A careful reader notices three things:
+
+
+1. The line names the language the site runs on, PHP, even though nobody asked the server to say so.
+
+2. It gives an exact version, 7.2.24. Versions age, and this one is years past its end of support.
+
+3. The line is there only because nobody switched off a default setting. That hints at how much care went into the rest of the configuration.
+
+None of that is a vulnerability yet. It is reconnaissance: a note on what the target runs and where you would look first if you were ever invited to test it. A defender who reads the same line removes it, because anything the browser receives, an attacker receives too.
+
+Every view in this section reads what the server already handed to your browser. Looking is legal. The line sits at what you do with what you see.
+
+Question
+Required to complete the chapter
+
+Read this page source the way you read the welcome page. Which path does it leak? Type the path.
+
+index.html
+
+```html
+<!doctype html>
+<html>
+<head>
+  <title>Acme portal</title>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/docs">Docs</a>
+    <!-- <a href="/admin-old">Admin (legacy)</a> -->
+  </nav>
+  <main>
+    <h1>Welcome</h1>
+  </main>
+</body>
+</html>
+line 10
+
+Leaked path:
+
+text
+/admin-old
+```
+
+
 

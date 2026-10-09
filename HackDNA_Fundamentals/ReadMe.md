@@ -145,3 +145,40 @@ The same action can be a **paid job** on one site and a **crime** on another. Wr
 
 On HackerDNA, a flag is a **UUID**, which is a randomly generated identifier. Here is one:
 ---
+# Methodology
+
+**Lesson** · 3 min read
+
+This section covers the method professionals follow: a **four-move loop** you repeat from minute to minute, and the **four stages** that organise a whole job. A one-week authorized test of a practice shop shows both at work.
+
+---
+
+## The Attacker's Loop
+
+Almost every attack, from a first flag hunt to a million dollar bug bounty, follows the same four moves. Together they are called the **attacker's loop**. Experienced hackers rarely name them, because after a while they stop being steps and become a reflex.
+
+1. **Observe** — look at the system. What does it show, and what does it hide?
+2. **Question** — what did the builder assume? What happens at the edges of the rules?
+3. **Test** — check one idea in the smallest way you can, and only on something you are invited to touch.
+4. **Learn** — either it worked, or it showed you why not. Then you go round again, knowing more.
+
+---
+
+## The Four Stages of an Engagement
+
+An **engagement** is one authorized testing job, with a client, a written scope and an end date. The loop runs hundreds of times during an engagement, and the work falls into four stages. Each stage hands something concrete to the next.
+
+| Stage | What you do | What it produces |
+|-------|-------------|------------------|
+| **Reconnaissance** | Gather information before touching anything: read the source, follow every link, note what the site runs on | A map |
+| **Enumeration** | Go deeper on what the map shows | Leads |
+| **Exploitation** | Use a weakness to make the system do something it should not, and stop at the proof | Proof |
+| **Reporting** | Write down what you found, how, why it matters and how to fix it | The report |
+
+---
+
+## Worked Example: One Week on shop.example
+
+The owners of `shop.example` invite you **in writing** to test their website for one week. They give you a test account and a contact address for questions. Here are your notes at the end of the week:
+
+---

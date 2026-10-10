@@ -1,4 +1,13 @@
 
-## How it works
+### How it works
 
 The payload looks ordinary: an issuer, an audience, a device subject, timestamps and a scope of pos.read pos.sale. Then there is ctx, a long base64 string that decodes to a whole second JSON document, and that is where the handset's real capabilities live. It carries tier colleague, a store and terminal id, a list of flags including pos.price_override and pos.void_line, and discount_bps 3000. Basis points are hundredths of a percent, so 3000 is thirty percent, applied by the till software without anybody entering anything. Nesting is what hid it. Every review that looked at this token read the claims it recognised and treated ctx as an opaque blob, the way you would skim past a signature, and the scope claim right beside it said the device could only read and sell. Both statements were in the same payload and they contradicted each other. Two habits follow from this. Base64 inside a token is still readable by whoever holds the token, so a device profile embedded like this is a public document, not a private one. And permissions that arrive from two places will eventually disagree: if scope is the contract, the till should not be reading entitlements out of a second structure that no gate inspects.
+
+### Investigate 
+
+```
+hZ3VlIiwic3RvcmUiOiJMRFMtMDE0IiwidGVybWluYWwiOiJoaC0yMiIsImRpc2NvdW50X2JwcyI6MzAwMCwiZmxhZ3MiOlsicG9zLnByaWNlX292ZXJyaWRlIiwicG9zLnZvaWRfbGluZSIsInBvcy5yZXByaW50Il0sInByb3Zpc2lvbmVkX2ZvciI6ImgubWJhdGhhIn0=",
+  "iat": 1791020400,
+  "exp": 1791063600
+
+```

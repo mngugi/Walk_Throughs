@@ -11,7 +11,7 @@ Everything after position twelve is not recovered by this particular crib calcul
 
 Using the key `PLOVER`, the encrypted file decodes into a readable environment configuration containing `DB_PASS=Halyard-Spindle-41` on the fourth line.
 
-## Why the Attack Works
+### Why the Attack Works
 
 The fundamental XOR relationship is:
 
@@ -33,7 +33,7 @@ K = C XOR P
 
 When the plaintext is known or can be accurately guessed, the corresponding key bytes can be recovered directly. If the encryption uses a repeating key, the recovered bytes reveal the repeating pattern.
 
-## What Was Not Needed
+### What Was Not Needed
 
 The attack did not require brute force, frequency analysis, or an exhaustive search for the encryption key. Instead, it exploited predictable plaintext and the mathematical properties of XOR.
 
@@ -46,7 +46,7 @@ The same principle applies to other file and protocol formats, including:
 - ZIP file headers.
 - JSON documents beginning with predictable structures, such as `{`.
 
-## Security Lesson
+### Security Lesson
 
 Repeating-key XOR is not secure encryption for protecting sensitive configuration files. Predictable plaintext can expose the repeating key, allowing the entire ciphertext to be decrypted.
 
@@ -58,9 +58,9 @@ Sensitive environment files should instead be protected using established authen
 
 >Here is the decryption process in raw Markdown, with the byte-level calculations made explicit. The important point is to >distinguish recovering the key from the known plaintext from using the recovered key to decrypt the entire file.
 >
-# Explicit Decryption Steps: Repeating-Key XOR
+### Explicit Decryption Steps: Repeating-Key XOR
 
-## Step 1: Identify the Ciphertext
+### Step 1: Identify the Ciphertext
 
 The challenge provides a hexadecimal ciphertext:
 
@@ -81,7 +81,7 @@ For example:
 
 The ciphertext must first be decoded from hexadecimal into bytes before applying XOR.
 
-## Step 2: Identify the Known Plaintext
+### Step 2: Identify the Known Plaintext
 
 The mission briefing states that every environment file begins with:
 
@@ -99,7 +99,7 @@ Its ASCII hexadecimal representation is:
 
 There are 12 characters, so there are 12 known plaintext bytes.
 
-## Step 3: Apply the XOR Equation
+### Step 3: Apply the XOR Equation
 
 The encryption relationship is:
 
@@ -121,7 +121,7 @@ K = C XOR P
 
 This means that each known plaintext byte can be XORed with its corresponding ciphertext byte to recover the key byte.
 
-## Step 4: Recover the First Key Bytes
+### Step 4: Recover the First Key Bytes
 
 The following table shows the first six byte calculations.
 
@@ -152,7 +152,7 @@ Therefore, the recovered six-byte key is:
 PLOVER
 ```
 
-## Step 5: Verify the Repeating Key
+### Step 5: Verify the Repeating Key
 
 The key has six characters:
 
@@ -180,7 +180,7 @@ PLOVERPLOVER
 
 This repetition is strong evidence that the crib is correct.
 
-## Step 6: Decrypt the Entire Ciphertext
+### Step 6: Decrypt the Entire Ciphertext
 
 Recovering the key is only the first stage. To decrypt the whole file, XOR every ciphertext byte with the corresponding byte of the repeating key.
 
@@ -213,7 +213,7 @@ P[i] = C[i] XOR K[i MOD 6]
 
 Here, `P[i]` is the recovered plaintext byte at position `i`, `C[i]` is the ciphertext byte, and `K` is the six-byte key.
 
-## Step 7: Recover the Database Password
+### Step 7: Recover the Database Password
 
 After applying the repeating key to the entire ciphertext, the readable environment configuration reveals the database password in the `DB_PASS` field.
 
@@ -223,7 +223,7 @@ The reported password is:
 Halyard-Spindle-41
 ```
 
-## Step 8: Understand the Security Weakness
+### Step 8: Understand the Security Weakness
 
 The attack succeeds because the encryption uses a repeating key and the plaintext contains predictable data.
 
@@ -232,7 +232,7 @@ The attacker does not need to search every possible key. Knowing the plaintext a
 This weakness applies to predictable file headers, configuration fields, and protocol messages. Repeating-key XOR should not be used to protect sensitive data; authenticated encryption and proper key management are required instead.
 
 ---
-## Step 9: Reproduce the Attack with Python
+### Step 9: Reproduce the Attack with Python
 The following code demonstrates the complete procedure using the ciphertext supplied in the challenge.
 
 ```python
@@ -272,10 +272,11 @@ print("\nDecrypted environment file:")
 print(plaintext.decode("utf-8", errors="replace"))
 
 ```
-## Step 10: Understand One XOR Calculation at the Bit Level
+### Step 10: Understand One XOR Calculation at the Bit Level
 Take the first ciphertext byte, 15 in hexadecimal, and the first known plaintext byte, E, which is 45 in hexadecimal.
 
 ```text
+
 Ciphertext:  15 = 00010101
 Plaintext:   45 = 01000101
                   -------- XOR
@@ -283,5 +284,7 @@ Key byte:    50 = 01010000
 
 ```
 > The resulting hexadecimal value 50 represents the ASCII character P.
-> Repeating this operation across the first six bytes yields PLOVER. The key then repeats every six bytes throughout the > ciphertext.
+> Repeating this operation across the first six bytes yields PLOVER. The key then repeats every six bytes throughout the
+> ciphertext.
+
 **Final lesson:** the known plaintext reveals the key through XOR arithmetic; the repeating key decrypts the complete message. These are two distinct stages of the same attack.

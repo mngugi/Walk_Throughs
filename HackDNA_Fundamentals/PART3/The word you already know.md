@@ -1,7 +1,7 @@
 
-# How It Works: Known-Plaintext Attack Against Repeating-Key XOR
+### How It Works: Known-Plaintext Attack Against Repeating-Key XOR
 
-XOR is its own inverse and operates one byte at a time. This means that ciphertext XOR plaintext returns the key, exactly where the guessed plaintext aligns with the actual plaintext.
+XOR is its own inverse and operates byte by byte. This means ciphertext XOR plaintext returns the key where the guessed plaintext aligns with the actual plaintext.
 
 This is known as a **known-plaintext attack**, and the process of testing a guessed plaintext fragment is called **crib dragging**.
 

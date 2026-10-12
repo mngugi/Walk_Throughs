@@ -1,7 +1,5 @@
 
-## The codes the page had to know
-
-# The Codes the Page Had to Know
+## The Codes the Page Had to Know
 
 **Category:** Security Fundamentals  
 **Difficulty:** Easy  

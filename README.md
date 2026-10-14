@@ -143,7 +143,7 @@ def dms_to_decimal(dms_str):
     degrees = int(match.group(1))
     minutes = int(match.group(2))
     seconds = float(match.group(3))
-    direction = match.group(4)
+    direction = matchgroup(4)
     
     # Convert DMS to decimal degrees
     decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)
@@ -187,7 +187,7 @@ st.write(f"**Longitude:** {longitude_str} -> **{longitude_decimal}**")
 ### Solution 
 **by MetaCTF**
 > Every time we run the program, it asks, Welcome to the physics checker. Enter your
-> groundbreaking theory . Regardless of what we enter, it seems to always responds with
+> groundbreaking theory. Regardless of what we enter, it seems to always responds with
 > Hmm, no, that theory doesn't seem to match the data .
 > Looking closer at the binary and the challenges statement and considering the response
 > talking about "matching the data", it seems likely that this is just a flag checker

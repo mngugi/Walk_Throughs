@@ -109,7 +109,7 @@ Light Value                     : 13.3
 > −106.405758333
 
 > Using a Mapping Service
-> You can enter these decimal degrees coordinates into a mapping service like Google Maps to find the exact location.
+> You can enter these decimal-degree coordinates into a mapping service like Google Maps to find the exact location.
 
 > Decimal Degrees:
 > Latitude: 39.152219444

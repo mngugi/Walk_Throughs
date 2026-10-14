@@ -1,5 +1,5 @@
 
-# Ethical Hacking : Chapter Notes
+# Ethical Hacking: Chapter Notes
 
 ## Introduction
 

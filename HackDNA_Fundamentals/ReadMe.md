@@ -3,7 +3,7 @@
 
 ## Introduction
 
-**Overview** · 2 min read
+**Overview** 
 
 This chapter covers the mindset behind ethical hacking. You will learn to:
 - Question what a system shows you
